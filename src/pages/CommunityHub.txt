@@ -1,0 +1,1001 @@
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Users, MessageCircle, TrendingUp, Award, Target, Vote, Brain, AlertTriangle, CheckCircle, XCircle, Clock, Search, Filter, ThumbsUp, ThumbsDown, Share2, BookOpen, Globe, Shield, Heart, Gift, Zap, Plus, Eye, UserPlus, Star, Flag } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useLanguage } from '@/components/LanguageContext';
+import { toast } from 'sonner';
+
+// Interfaces for Community Verification
+interface CommunityVerification {
+  id: string;
+  claim: string;
+  submittedBy: string;
+  submittedAt: Date;
+  category: string;
+  status: 'voting' | 'ai-analyzing' | 'completed' | 'conflicted';
+  votes: {
+    total: number;
+    trueVotes: number;
+    falseVotes: number;
+  };
+  aiVerdict?: 'true' | 'false' | 'mixed';
+  aiConfidence?: number;
+  conflictLevel?: 'none' | 'low' | 'high';
+  sources?: number;
+  discussionCount: number;
+  tags: string[];
+  userVote?: 'true' | 'false';
+  priority: 'low' | 'medium' | 'high';
+}
+
+// Interfaces for Top Contributors
+interface TopContributor {
+  id: string;
+  username: string;
+  avatar: string;
+  truthScore: number;
+  verifiedClaims: number;
+  accuracy: number;
+  reputation: 'novice' | 'trusted' | 'expert' | 'authority';
+  badges: string[];
+}
+
+// Interfaces for Social Posts
+interface SocialPost {
+  id: string;
+  author: {
+    username: string;
+    avatar: string;
+    reputation: 'novice' | 'trusted' | 'expert' | 'authority';
+    country: string;
+    verifiedClaims: number;
+  };
+  content: string;
+  type: 'prediction' | 'verification' | 'news' | 'discussion';
+  timestamp: Date;
+  likes: number;
+  comments: number;
+  shares: number;
+  tags: string[];
+  isLiked?: boolean;
+  marketId?: string;
+  truthAccuracy?: number;
+}
+
+// Interfaces for Communities
+interface Community {
+  id: string;
+  name: string;
+  nameLocal: string;
+  description: string;
+  members: number;
+  country: string;
+  flag: string;
+  language: string;
+  isJoined: boolean;
+  activeVerifications: number;
+  recentActivity: string;
+}
+
+// Mock data for community verifications
+const mockVerifications: CommunityVerification[] = [
+  {
+    id: '1',
+    claim: 'Nigeria\'s new digital currency eNaira will replace physical cash by 2026',
+    submittedBy: 'TruthSeeker_NG',
+    submittedAt: new Date('2025-01-15'),
+    category: 'African Economy',
+    status: 'voting',
+    votes: { total: 1247, trueVotes: 423, falseVotes: 824 },
+    aiVerdict: 'false',
+    aiConfidence: 78,
+    conflictLevel: 'high',
+    sources: 8,
+    discussionCount: 89,
+    tags: ['Nigeria', 'CBDC', 'Economy', 'Future'],
+    priority: 'high'
+  },
+  {
+    id: '2',
+    claim: 'Kenya\'s geothermal energy will provide 100% renewable electricity by 2030',
+    submittedBy: 'ClimateWatcher_KE',
+    submittedAt: new Date('2025-01-14'),
+    category: 'Environment',
+    status: 'ai-analyzing',
+    votes: { total: 892, trueVotes: 567, falseVotes: 325 },
+    sources: 12,
+    discussionCount: 56,
+    tags: ['Kenya', 'Renewable Energy', 'Geothermal', '2030'],
+    priority: 'medium'
+  },
+  {
+    id: '3',
+    claim: 'South Africa\'s unemployment rate dropped below 20% in December 2024',
+    submittedBy: 'EconAnalyst_ZA',
+    submittedAt: new Date('2025-01-13'),
+    category: 'African Economy',
+    status: 'completed',
+    votes: { total: 2156, trueVotes: 1034, falseVotes: 1122 },
+    aiVerdict: 'false',
+    aiConfidence: 92,
+    conflictLevel: 'low',
+    sources: 15,
+    discussionCount: 143,
+    tags: ['South Africa', 'Unemployment', 'Statistics'],
+    userVote: 'false',
+    priority: 'high'
+  },
+  {
+    id: '4',
+    claim: 'Ghana\'s cocoa production increased by 40% in 2024 due to new farming techniques',
+    submittedBy: 'AgriTech_GH',
+    submittedAt: new Date('2025-01-12'),
+    category: 'Agriculture',
+    status: 'conflicted',
+    votes: { total: 743, trueVotes: 378, falseVotes: 365 },
+    aiVerdict: 'true',
+    aiConfidence: 65,
+    conflictLevel: 'high',
+    sources: 6,
+    discussionCount: 91,
+    tags: ['Ghana', 'Cocoa', 'Agriculture', 'Innovation'],
+    priority: 'medium'
+  }
+];
+
+// Mock data for top contributors
+const topContributors: TopContributor[] = [
+  {
+    id: '1',
+    username: 'TruthMaster_NG',
+    avatar: '🇳🇬',
+    truthScore: 2847,
+    verifiedClaims: 156,
+    accuracy: 94.2,
+    reputation: 'authority',
+    badges: ['Fact Champion', 'Nigeria Expert', 'Top Verifier']
+  },
+  {
+    id: '2',
+    username: 'FactChecker_KE',
+    avatar: '🇰🇪',
+    truthScore: 2134,
+    verifiedClaims: 98,
+    accuracy: 91.8,
+    reputation: 'expert',
+    badges: ['Kenya Specialist', 'Truth Seeker', 'Reliable Source']
+  },
+  {
+    id: '3',
+    username: 'Verifier_ZA',
+    avatar: '🇿🇦',
+    truthScore: 1892,
+    verifiedClaims: 87,
+    accuracy: 89.5,
+    reputation: 'expert',
+    badges: ['SA Economy Expert', 'Data Analyst', 'Truth Guardian']
+  },
+  {
+    id: '4',
+    username: 'SourceHunter_GH',
+    avatar: '🇬🇭',
+    truthScore: 1456,
+    verifiedClaims: 72,
+    accuracy: 87.3,
+    reputation: 'trusted',
+    badges: ['Ghana Insider', 'Source Validator', 'Rising Star']
+  }
+];
+
+// Mock data for social posts
+const mockPosts: SocialPost[] = [
+  {
+    id: '1',
+    author: {
+      username: 'TruthSeeker_NG',
+      avatar: '🇳🇬',
+      reputation: 'expert',
+      country: 'Nigeria',
+      verifiedClaims: 127
+    },
+    content: 'Just verified the inflation claim for Nigeria - the Central Bank data shows we\'re heading towards 26% by August. The signs are all there: rising food prices, fuel costs, and currency pressure. What do you think? #NigeriaEconomy #TruthVerification',
+    type: 'verification',
+    timestamp: new Date('2025-01-20T14:30:00'),
+    likes: 42,
+    comments: 18,
+    shares: 7,
+    tags: ['Nigeria', 'Economy', 'Inflation'],
+    truthAccuracy: 94.2
+  },
+  {
+    id: '2',
+    author: {
+      username: 'FactChecker_SN',
+      avatar: '🇸🇳',
+      reputation: 'trusted',
+      country: 'Senegal',
+      verifiedClaims: 89
+    },
+    content: 'Le projet TER Dakar-Diamniadio avance bien ! J\'ai vérifié les dernières données du gouvernement et les travaux sont à 78% d\'achèvement. Très optimiste pour décembre 2025. #SenegalDevelopment #Transport',
+    type: 'prediction',
+    timestamp: new Date('2025-01-20T12:15:00'),
+    likes: 31,
+    comments: 12,
+    shares: 5,
+    tags: ['Senegal', 'Transport', 'Infrastructure'],
+    truthAccuracy: 87.8
+  },
+  {
+    id: '3',
+    author: {
+      username: 'CocaoTracker_CI',
+      avatar: '🇨🇮',
+      reputation: 'authority',
+      country: 'Côte d\'Ivoire',
+      verifiedClaims: 203
+    },
+    content: 'Breaking: Nouvelle estimation de production de cacao pour 2025 - nos sources au Conseil Café-Cacao indiquent 3.1M tonnes possibles malgré El Niño. Restez vigilants sur cette prédiction! #CoteDivoire #Cocoa #Agriculture',
+    type: 'news',
+    timestamp: new Date('2025-01-20T10:45:00'),
+    likes: 89,
+    comments: 34,
+    shares: 23,
+    tags: ['Côte d\'Ivoire', 'Agriculture', 'Cocoa'],
+    truthAccuracy: 91.3
+  },
+  {
+    id: '4',
+    author: {
+      username: 'EnergyWatcher_MA',
+      avatar: '🇲🇦',
+      reputation: 'expert',
+      country: 'Morocco',
+      verifiedClaims: 156
+    },
+    content: 'Morocco\'s renewable energy progress is impressive! Just analyzed the latest MASEN data - we\'re at 42% renewable capacity already. The 52% target by end of 2025 looks very achievable. #Morocco #RenewableEnergy #Solar',
+    type: 'verification',
+    timestamp: new Date('2025-01-20T09:20:00'),
+    likes: 67,
+    comments: 21,
+    shares: 15,
+    tags: ['Morocco', 'Energy', 'Solar'],
+    truthAccuracy: 96.1
+  },
+  {
+    id: '5',
+    author: {
+      username: 'KenyaInsider_KE',
+      avatar: '🇰🇪',
+      reputation: 'trusted',
+      country: 'Kenya',
+      verifiedClaims: 94
+    },
+    content: 'The Central Bank of Kenya\'s new monetary policy is working. Shilling showing strength against USD - my analysis suggests we might see KES 140/USD by March 2025. Community thoughts? #Kenya #Currency #CBK',
+    type: 'discussion',
+    timestamp: new Date('2025-01-19T16:30:00'),
+    likes: 55,
+    comments: 29,
+    shares: 11,
+    tags: ['Kenya', 'Currency', 'Economics'],
+    truthAccuracy: 88.7
+  }
+];
+
+// Mock data for African communities
+const africanCommunities: Community[] = [
+  {
+    id: 'nigeria',
+    name: 'Nigeria Truth Network',
+    nameLocal: 'Nigeria Truth Network',
+    description: 'Verifying truth across Nigeria - from Lagos to Abuja to Kano',
+    members: 12847,
+    country: 'Nigeria',
+    flag: '🇳🇬',
+    language: 'English',
+    isJoined: true,
+    activeVerifications: 89,
+    recentActivity: '234 verifications today'
+  },
+  {
+    id: 'senegal',
+    name: 'Senegal Vérité',
+    nameLocal: 'Réseau de Vérité du Sénégal',
+    description: 'Vérification de la vérité au Sénégal - de Dakar à Saint-Louis',
+    members: 8923,
+    country: 'Senegal',
+    flag: '🇸🇳',
+    language: 'Français',
+    isJoined: false,
+    activeVerifications: 56,
+    recentActivity: '128 vérifications aujourd\'hui'
+  },
+  {
+    id: 'cote-divoire',
+    name: 'Côte d\'Ivoire Vérité',
+    nameLocal: 'Réseau de Vérité de Côte d\'Ivoire',
+    description: 'Vérification communautaire en Côte d\'Ivoire - d\'Abidjan à Bouaké',
+    members: 7456,
+    country: 'Côte d\'Ivoire',
+    flag: '🇨🇮',
+    language: 'Français',
+    isJoined: true,
+    activeVerifications: 43,
+    recentActivity: '97 vérifications aujourd\'hui'
+  },
+  {
+    id: 'kenya',
+    name: 'Kenya Truth Hub',
+    nameLocal: 'Kenya Truth Hub',
+    description: 'Truth verification across Kenya - from Nairobi to Mombasa',
+    members: 9834,
+    country: 'Kenya',
+    flag: '🇰🇪',
+    language: 'English/Swahili',
+    isJoined: false,
+    activeVerifications: 67,
+    recentActivity: '156 verifications today'
+  },
+  {
+    id: 'south-africa',
+    name: 'South Africa Truth Coalition',
+    nameLocal: 'South Africa Truth Coalition',
+    description: 'Fighting misinformation across the Rainbow Nation',
+    members: 11234,
+    country: 'South Africa',
+    flag: '🇿🇦',
+    language: 'English',
+    isJoined: true,
+    activeVerifications: 78,
+    recentActivity: '189 verifications today'
+  }
+];
+
+export default function CommunityHub() {
+  // State for community verification section
+  const [activeTab, setActiveTab] = useState('voting');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [userVotes, setUserVotes] = useState<Record<string, 'true' | 'false'>>({});
+  const [aiLearningStats, setAiLearningStats] = useState({
+    totalCorrections: 1247,
+    accuracyImprovement: 12.4,
+    communityContributions: 5689,
+    conflictsResolved: 89
+  });
+
+  // State for social hub section
+  const [activeSocialTab, setActiveSocialTab] = useState('feed');
+  const [newPostContent, setNewPostContent] = useState('');
+  const [postType, setPostType] = useState('discussion');
+  const [socialSearchQuery, setSocialSearchQuery] = useState('');
+  const [communityFilter, setCommunityFilter] = useState('all');
+  const [postSort, setPostSort] = useState('recent');
+  const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>({});
+  const [joinedCommunities, setJoinedCommunities] = useState<Record<string, boolean>>({
+    'nigeria': true,
+    'cote-divoire': true,
+    'south-africa': true
+  });
+
+  // Language context
+  const { language } = useLanguage();
+
+  // Simulate real-time updates for AI learning stats
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAiLearningStats(prev => ({
+        ...prev,
+        communityContributions: prev.communityContributions + Math.floor(Math.random() * 3),
+        conflictsResolved: prev.conflictsResolved + (Math.random() > 0.9 ? 1 : 0)
+      }));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Handle voting on community verifications
+  const handleVote = (verificationId: string, vote: 'true' | 'false') => {
+    setUserVotes(prev => ({ ...prev, [verificationId]: vote }));
+    
+    toast.success(
+      <div className="flex items-center gap-2">
+        <Vote className="h-4 w-4 text-primary" />
+        <span>Vote cast! Contributing to truth verification 🗳️</span>
+      </div>
+    );
+
+    // Simulate AI learning from vote
+    setTimeout(() => {
+      toast.info(
+        <div className="flex items-center gap-2">
+          <Brain className="h-4 w-4 text-secondary" />
+          <span>AI is learning from your vote...</span>
+        </div>
+      );
+    }, 1500);
+  };
+
+  // Handle liking a social post
+  const handleLikePost = (postId: string) => {
+    setLikedPosts(prev => ({ ...prev, [postId]: !prev[postId] }));
+    
+    const post = mockPosts.find(p => p.id === postId);
+    if (post) {
+      toast.success(
+        <div className="flex items-center gap-2">
+          <Heart className="h-4 w-4 text-primary" />
+          <span>{likedPosts[postId] ? 'Unliked post' : 'Liked post!'}</span>
+        </div>
+      );
+    }
+  };
+
+  // Handle creating a new social post
+  const handleCreatePost = () => {
+    if (newPostContent.trim() === '') {
+      toast.error('Please enter some content for your post');
+      return;
+    }
+
+    toast.success(
+      <div className="flex items-center gap-2">
+        <Share2 className="h-4 w-4 text-primary" />
+        <span>Post created successfully!</span>
+      </div>
+    );
+    
+    setNewPostContent('');
+  };
+
+  // Handle joining/leaving a community
+  const handleJoinCommunity = (communityId: string) => {
+    setJoinedCommunities(prev => ({ ...prev, [communityId]: !prev[communityId] }));
+    
+    const community = africanCommunities.find(c => c.id === communityId);
+    if (community) {
+      toast.success(
+        <div className="flex items-center gap-2">
+          <Users className="h-4 w-4 text-primary" />
+          <span>{joinedCommunities[communityId] ? `Left ${community.name}` : `Joined ${community.name}!`}</span>
+        </div>
+      );
+    }
+  };
+
+  // Format date for display
+  const formatDate = (date: Date) => {
+    return new Intl.DateTimeFormat(language, {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
+  };
+
+  // Get status badge for community verification
+  const getStatusBadge = (status: CommunityVerification['status']) => {
+    switch (status) {
+      case 'voting':
+        return <Badge variant="secondary" className="gap-1"><Vote className="h-3 w-3" /> Voting</Badge>;
+      case 'ai-analyzing':
+        return <Badge variant="default" className="gap-1"><Brain className="h-3 w-3" /> AI Analyzing</Badge>;
+      case 'completed':
+        return <Badge variant="outline" className="gap-1"><CheckCircle className="h-3 w-3" /> Completed</Badge>;
+      case 'conflicted':
+        return <Badge variant="destructive" className="gap-1"><AlertTriangle className="h-3 w-3" /> Conflicted</Badge>;
+      default:
+        return <Badge variant="secondary">{status}</Badge>;
+    }
+  };
+
+  // Get priority badge for community verification
+  const getPriorityBadge = (priority: CommunityVerification['priority']) => {
+    switch (priority) {
+      case 'high':
+        return <Badge variant="destructive" className="text-xs">High Priority</Badge>;
+      case 'medium':
+        return <Badge variant="secondary" className="text-xs">Medium</Badge>;
+      case 'low':
+        return <Badge variant="outline" className="text-xs">Low Priority</Badge>;
+      default:
+        return null;
+    }
+  };
+
+  // Get post type badge for social posts
+  const getPostTypeBadge = (type: SocialPost['type']) => {
+    switch (type) {
+      case 'prediction':
+        return <Badge className="gap-1 bg-purple-500 hover:bg-purple-600"><Target className="h-3 w-3" /> Prediction</Badge>;
+      case 'verification':
+        return <Badge className="gap-1 bg-green-500 hover:bg-green-600"><CheckCircle className="h-3 w-3" /> Verified</Badge>;
+      case 'news':
+        return <Badge className="gap-1 bg-blue-500 hover:bg-blue-600"><Globe className="h-3 w-3" /> News</Badge>;
+      case 'discussion':
+        return <Badge className="gap-1 bg-yellow-500 hover:bg-yellow-600"><MessageCircle className="h-3 w-3" /> Discussion</Badge>;
+      default:
+        return <Badge>{type}</Badge>;
+    }
+  };
+
+  // Get reputation badge for users
+  const getReputationBadge = (reputation: TopContributor['reputation']) => {
+    switch (reputation) {
+      case 'authority':
+        return <Badge className="gap-1 bg-gradient-to-r from-purple-500 to-pink-500"><Award className="h-3 w-3" /> Authority</Badge>;
+      case 'expert':
+        return <Badge className="gap-1 bg-gradient-to-r from-blue-500 to-cyan-500"><Shield className="h-3 w-3" /> Expert</Badge>;
+      case 'trusted':
+        return <Badge className="gap-1 bg-gradient-to-r from-green-500 to-emerald-500"><CheckCircle className="h-3 w-3" /> Trusted</Badge>;
+      case 'novice':
+        return <Badge className="gap-1 bg-gradient-to-r from-yellow-500 to-orange-500"><Star className="h-3 w-3" /> Novice</Badge>;
+      default:
+        return <Badge>{reputation}</Badge>;
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Main Content */}
+        <div className="flex-1 space-y-6">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-4 sm:p-6">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Community Hub</h1>
+                <p className="text-muted-foreground mt-2 text-sm sm:text-base">
+                  Join the collective effort to verify truth and share insights across Africa
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-primary">{aiLearningStats.communityContributions.toLocaleString()}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Contributions</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-secondary">{aiLearningStats.conflictsResolved}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Conflicts Resolved</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tabs for switching between Community Verification and Social Feed */}
+          <Tabs defaultValue="verification" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="verification" className="gap-2">
+                <Shield className="h-4 w-4" />
+                Truth Verification
+              </TabsTrigger>
+              <TabsTrigger value="social" className="gap-2">
+                <Users className="h-4 w-4" />
+                Social Feed
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Community Verification Tab */}
+            <TabsContent value="verification" className="space-y-6">
+              {/* Verification Stats */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Brain className="h-5 w-5 text-primary" />
+                    AI Learning Progress
+                  </CardTitle>
+                  <CardDescription>
+                    Community contributions help improve our truth verification algorithms
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-primary/10 rounded-lg">
+                      <div className="text-2xl font-bold text-primary">{aiLearningStats.totalCorrections.toLocaleString()}</div>
+                      <div className="text-sm text-muted-foreground">Total Corrections</div>
+                    </div>
+                    <div className="p-4 bg-secondary/10 rounded-lg">
+                      <div className="text-2xl font-bold text-secondary">+{aiLearningStats.accuracyImprovement}%</div>
+                      <div className="text-sm text-muted-foreground">Accuracy Improvement</div>
+                    </div>
+                    <div className="p-4 bg-green-500/10 rounded-lg">
+                      <div className="text-2xl font-bold text-green-500">{aiLearningStats.communityContributions.toLocaleString()}</div>
+                      <div className="text-sm text-muted-foreground">Community Contributions</div>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-4">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>AI Confidence</span>
+                      <span>92%</span>
+                    </div>
+                    <Progress value={92} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Verification Controls */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search claims to verify..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                  <SelectTrigger className="w-full sm:w-40">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    <SelectItem value="African Economy">African Economy</SelectItem>
+                    <SelectItem value="Environment">Environment</SelectItem>
+                    <SelectItem value="Agriculture">Agriculture</SelectItem>
+                    <SelectItem value="Politics">Politics</SelectItem>
+                    <SelectItem value="Technology">Technology</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full sm:w-40">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Statuses</SelectItem>
+                    <SelectItem value="voting">Voting</SelectItem>
+                    <SelectItem value="ai-analyzing">AI Analyzing</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="conflicted">Conflicted</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Verification Cards */}
+              <div className="grid gap-6">
+                {mockVerifications.map((verification) => (
+                  <Card key={verification.id} className="overflow-hidden">
+                    <CardHeader className="pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          {getStatusBadge(verification.status)}
+                          {getPriorityBadge(verification.priority)}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Submitted by {verification.submittedBy} • {formatDate(verification.submittedAt)}
+                        </div>
+                      </div>
+                      <CardTitle className="text-lg mt-2">{verification.claim}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {verification.tags.map((tag) => (
+                          <Badge key={tag} variant="outline">{tag}</Badge>
+                        ))}
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div className="p-3 bg-muted/50 rounded-lg">
+                          <div className="text-sm text-muted-foreground">Total Votes</div>
+                          <div className="text-lg font-semibold">{verification.votes.total.toLocaleString()}</div>
+                        </div>
+                        <div className="p-3 bg-green-500/10 rounded-lg">
+                          <div className="text-sm text-green-500">True Votes</div>
+                          <div className="text-lg font-semibold text-green-500">{verification.votes.trueVotes.toLocaleString()}</div>
+                        </div>
+                        <div className="p-3 bg-red-500/10 rounded-lg">
+                          <div className="text-sm text-red-500">False Votes</div>
+                          <div className="text-lg font-semibold text-red-500">{verification.votes.falseVotes.toLocaleString()}</div>
+                        </div>
+                      </div>
+                      
+                      {verification.status === 'completed' && verification.aiVerdict && (
+                        <div className="mb-4 p-3 bg-primary/10 rounded-lg">
+                          <div className="flex items-center gap-2 mb-1">
+                            <Brain className="h-4 w-4 text-primary" />
+                            <span className="font-medium">AI Verdict</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge variant={verification.aiVerdict === 'true' ? 'default' : 'destructive'}>
+                              {verification.aiVerdict.toUpperCase()}
+                            </Badge>
+                            <span className="text-sm text-muted-foreground">
+                              {verification.aiConfidence}% confidence
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {verification.status === 'voting' && (
+                        <div className="flex flex-col sm:flex-row gap-3">
+                          <Button 
+                            variant={userVotes[verification.id] === 'true' ? 'default' : 'outline'}
+                            onClick={() => handleVote(verification.id, 'true')}
+                            className="flex-1 gap-2"
+                          >
+                            <ThumbsUp className="h-4 w-4" />
+                            True ({verification.votes.trueVotes})
+                          </Button>
+                          <Button 
+                            variant={userVotes[verification.id] === 'false' ? 'destructive' : 'outline'}
+                            onClick={() => handleVote(verification.id, 'false')}
+                            className="flex-1 gap-2"
+                          >
+                            <ThumbsDown className="h-4 w-4" />
+                            False ({verification.votes.falseVotes})
+                          </Button>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* Social Feed Tab */}
+            <TabsContent value="social" className="space-y-6">
+              {/* Create Post Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Plus className="h-5 w-5" />
+                    Create Post
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Select value={postType} onValueChange={setPostType}>
+                      <SelectTrigger className="w-full sm:w-32">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="discussion">Discussion</SelectItem>
+                        <SelectItem value="prediction">Prediction</SelectItem>
+                        <SelectItem value="verification">Verification</SelectItem>
+                        <SelectItem value="news">News</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Textarea
+                      placeholder="Share your thoughts, predictions, or verified facts with the community..."
+                      value={newPostContent}
+                      onChange={(e) => setNewPostContent(e.target.value)}
+                      className="flex-1"
+                      rows={3}
+                    />
+                  </div>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div className="flex gap-2 flex-wrap">
+                      {getPostTypeBadge(postType as SocialPost['type'])}
+                    </div>
+                    <Button onClick={handleCreatePost} className="gap-2 w-full sm:w-auto">
+                      <Share2 className="h-4 w-4" />
+                      Post
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Social Feed Controls */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search posts..."
+                    value={socialSearchQuery}
+                    onChange={(e) => setSocialSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <Select value={communityFilter} onValueChange={setCommunityFilter}>
+                  <SelectTrigger className="w-full sm:w-40">
+                    <SelectValue placeholder="Community" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Communities</SelectItem>
+                    <SelectItem value="nigeria">Nigeria</SelectItem>
+                    <SelectItem value="kenya">Kenya</SelectItem>
+                    <SelectItem value="south-africa">South Africa</SelectItem>
+                    <SelectItem value="senegal">Senegal</SelectItem>
+                    <SelectItem value="cote-divoire">Côte d'Ivoire</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={postSort} onValueChange={setPostSort}>
+                  <SelectTrigger className="w-full sm:w-40">
+                    <SelectValue placeholder="Sort By" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="recent">Most Recent</SelectItem>
+                    <SelectItem value="popular">Most Popular</SelectItem>
+                    <SelectItem value="discussed">Most Discussed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Social Posts */}
+              <div className="grid gap-6">
+                {mockPosts.map((post) => (
+                  <Card key={post.id}>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Avatar>
+                            <AvatarFallback>{post.author.avatar}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="font-medium">{post.author.username}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {post.author.country} • {formatDate(post.timestamp)}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {getReputationBadge(post.author.reputation)}
+                          <Badge variant="outline" className="gap-1">
+                            <CheckCircle className="h-3 w-3" />
+                            {post.author.verifiedClaims} verified
+                          </Badge>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="mb-4">{post.content}</p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {post.tags.map((tag) => (
+                          <Badge key={tag} variant="outline">{tag}</Badge>
+                        ))}
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex gap-4">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="gap-2"
+                            onClick={() => handleLikePost(post.id)}
+                          >
+                            <Heart className={`h-4 w-4 ${likedPosts[post.id] ? 'fill-primary text-primary' : ''}`} />
+                            {post.likes + (likedPosts[post.id] ? 1 : 0)}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="gap-2">
+                            <MessageCircle className="h-4 w-4" />
+                            {post.comments}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="gap-2">
+                            <Share2 className="h-4 w-4" />
+                            {post.shares}
+                          </Button>
+                        </div>
+                        <div className="flex gap-2 flex-wrap">
+                          {getPostTypeBadge(post.type)}
+                          {post.truthAccuracy && (
+                            <Badge variant="outline" className="gap-1">
+                              <Shield className="h-3 w-3" />
+                              {post.truthAccuracy}% accuracy
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Sidebar */}
+        <div className="w-full lg:w-80 space-y-6">
+          {/* Top Contributors */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Award className="h-5 w-5 text-primary" />
+                Top Contributors
+              </CardTitle>
+              <CardDescription>
+                Leading truth verifiers in the community
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {topContributors.map((contributor) => (
+                <div key={contributor.id} className="flex items-center gap-3">
+                  <Avatar>
+                    <AvatarFallback>{contributor.avatar}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium truncate text-sm sm:text-base">{contributor.username}</div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {getReputationBadge(contributor.reputation)}
+                      <span className="text-xs text-muted-foreground">
+                        {contributor.truthScore} pts
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-semibold text-sm sm:text-base">{contributor.accuracy}%</div>
+                    <div className="text-xs text-muted-foreground">accuracy</div>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* African Communities */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="h-5 w-5 text-primary" />
+                African Communities
+              </CardTitle>
+              <CardDescription>
+                Join regional truth verification networks
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {africanCommunities.map((community) => (
+                <div key={community.id} className="p-3 border rounded-lg">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{community.flag}</span>
+                      <div>
+                        <div className="font-medium">{community.name}</div>
+                        <div className="text-sm text-muted-foreground">{community.nameLocal}</div>
+                      </div>
+                    </div>
+                    <Button 
+                      variant={joinedCommunities[community.id] ? "outline" : "default"}
+                      size="sm"
+                      onClick={() => handleJoinCommunity(community.id)}
+                      className="w-full sm:w-auto"
+                    >
+                      {joinedCommunities[community.id] ? 'Joined' : 'Join'}
+                    </Button>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-2">{community.description}</p>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-3 text-sm gap-2">
+                    <span className="text-muted-foreground">{community.members.toLocaleString()} members</span>
+                    <span className="text-primary">{community.activeVerifications} active</span>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Community Stats */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                Community Stats
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-3 bg-primary/10 rounded-lg">
+                <div className="text-2xl font-bold text-primary">24.7K</div>
+                <div className="text-sm text-muted-foreground">Active Verifiers</div>
+              </div>
+              <div className="p-3 bg-secondary/10 rounded-lg">
+                <div className="text-2xl font-bold text-secondary">8.9K</div>
+                <div className="text-sm text-muted-foreground">Claims Verified</div>
+              </div>
+              <div className="p-3 bg-green-500/10 rounded-lg">
+                <div className="text-2xl font-bold text-green-500">94.2%</div>
+                <div className="text-sm text-muted-foreground">Avg. Accuracy</div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
