@@ -306,7 +306,7 @@ export default function LocalCurrencyWallet() {
   if (!isVisible) {
     return (
       <div
-        className="fixed bottom-6 right-6 z-50"
+        className="load-wallet-btn"
         style={{ zIndex: 9999 }}
       >
         <Button

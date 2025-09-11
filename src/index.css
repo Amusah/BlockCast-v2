@@ -7826,3 +7826,15 @@ html {
 }
   
 }
+
+.load-wallet-btn{
+    position: fixed;
+    bottom: 3%;
+    right: 3%;
+    z-index: 50;
+  }
+   @media (max-width: 1023px) {
+      .load-wallet-btn{
+        bottom: 10%;
+      }
+    }
