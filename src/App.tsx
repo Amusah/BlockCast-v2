@@ -487,7 +487,7 @@ export default function App() {
           )
         },
         {
-          path: "/social-hub",
+          path: "/community-hub",
           element: <CommunityHub />
         },
         {

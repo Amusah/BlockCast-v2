@@ -159,7 +159,7 @@ export default function Footer({ onNavigate }: FooterProps) {
             </div>
           </div>
 
-          <FooterAccordion handleLinkClick={handleLinkClick} />
+          {/* <FooterAccordion handleLinkClick={handleLinkClick} /> */}
           
         </div>
 

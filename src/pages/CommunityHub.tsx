@@ -412,7 +412,7 @@ const getStatusIcon = (status: string) => {
 
 export default function Social() {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState("feed");
+  const [activeTab, setActiveTab] = useState("voting");
   const [newPost, setNewPost] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");

@@ -28,7 +28,7 @@ export default function TopNavigation({ isDarkMode, onToggleDarkMode, userBalanc
   const mainNavItems = [
     { id: 'markets', label: 'Truth Markets', icon: TrendingUp, path: '/' },
     { id: 'verify', label: 'Verify Truth', icon: Shield, path: '/verify-truth' },
-    { id: 'social-hub', label: 'social Hub', icon: Users, path: '/social-hub' },
+    { id: 'community-hub', label: 'community Hub', icon: Users, path: '/community-hub' },
   ];
 
   const languageOptions = [

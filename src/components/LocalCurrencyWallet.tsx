@@ -1,15 +1,49 @@
-import { useState, useRef, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
-import { Separator } from './ui/separator';
-import { Wallet, CreditCard, ArrowUpDown, Zap, Shield, Globe, CheckCircle, AlertCircle, ExternalLink, Smartphone, GripVertical, Minimize2, Maximize2, X } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState, useRef, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { Separator } from "./ui/separator";
+import {
+  Wallet,
+  CreditCard,
+  ArrowUpDown,
+  Zap,
+  Shield,
+  Globe,
+  CheckCircle,
+  AlertCircle,
+  ExternalLink,
+  Smartphone,
+  GripVertical,
+  Minimize2,
+  Maximize2,
+  X,
+} from "lucide-react";
+import { toast } from "sonner";
 
 interface CurrencyOption {
   code: string;
@@ -23,7 +57,7 @@ interface PaymentProvider {
   id: string;
   name: string;
   logo: string;
-  type: 'crypto' | 'local' | 'mobile';
+  type: "crypto" | "local" | "mobile";
   fees: string;
   processingTime: string;
   supportedCurrencies: string[];
@@ -36,86 +70,113 @@ interface Position {
 }
 
 const africanCurrencies: CurrencyOption[] = [
-  { code: 'NGN', name: 'Nigerian Naira', symbol: '₦', flag: '🇳🇬', rate: 0.0012 },
-  { code: 'KES', name: 'Kenyan Shilling', symbol: 'KSh', flag: '🇰🇪', rate: 0.0077 },
-  { code: 'ZAR', name: 'South African Rand', symbol: 'R', flag: '🇿🇦', rate: 0.055 },
-  { code: 'GHS', name: 'Ghanaian Cedi', symbol: '₵', flag: '🇬🇭', rate: 0.082 },
-  { code: 'ETB', name: 'Ethiopian Birr', symbol: 'Br', flag: '🇪🇹', rate: 0.018 },
-  { code: 'USD', name: 'US Dollar', symbol: '$', flag: '🇺🇸', rate: 1.0 }
+  {
+    code: "NGN",
+    name: "Nigerian Naira",
+    symbol: "₦",
+    flag: "🇳🇬",
+    rate: 0.0012,
+  },
+  {
+    code: "KES",
+    name: "Kenyan Shilling",
+    symbol: "KSh",
+    flag: "🇰🇪",
+    rate: 0.0077,
+  },
+  {
+    code: "ZAR",
+    name: "South African Rand",
+    symbol: "R",
+    flag: "🇿🇦",
+    rate: 0.055,
+  },
+  { code: "GHS", name: "Ghanaian Cedi", symbol: "₵", flag: "🇬🇭", rate: 0.082 },
+  {
+    code: "ETB",
+    name: "Ethiopian Birr",
+    symbol: "Br",
+    flag: "🇪🇹",
+    rate: 0.018,
+  },
+  { code: "USD", name: "US Dollar", symbol: "$", flag: "🇺🇸", rate: 1.0 },
 ];
 
 const paymentProviders: PaymentProvider[] = [
   {
-    id: 'metamask',
-    name: 'MetaMask',
-    logo: '🦊',
-    type: 'crypto',
-    fees: '0.5%',
-    processingTime: 'Instant',
-    supportedCurrencies: ['ETH', 'USDC', 'DAI'],
-    popular: true
+    id: "metamask",
+    name: "MetaMask",
+    logo: "🦊",
+    type: "crypto",
+    fees: "0.5%",
+    processingTime: "Instant",
+    supportedCurrencies: ["ETH", "USDC", "DAI"],
+    popular: true,
   },
   {
-    id: 'yellowcard',
-    name: 'Yellow Card',
-    logo: '💳',
-    type: 'local',
-    fees: '1.5%',
-    processingTime: '2-5 minutes',
-    supportedCurrencies: ['NGN', 'KES', 'ZAR', 'GHS'],
-    popular: true
+    id: "yellowcard",
+    name: "Yellow Card",
+    logo: "💳",
+    type: "local",
+    fees: "1.5%",
+    processingTime: "2-5 minutes",
+    supportedCurrencies: ["NGN", "KES", "ZAR", "GHS"],
+    popular: true,
   },
   {
-    id: 'binance',
-    name: 'Binance Pay',
-    logo: '🟡',
-    type: 'crypto',
-    fees: '0.1%',
-    processingTime: 'Instant',
-    supportedCurrencies: ['BNB', 'USDT', 'ETH']
+    id: "binance",
+    name: "Binance Pay",
+    logo: "🟡",
+    type: "crypto",
+    fees: "0.1%",
+    processingTime: "Instant",
+    supportedCurrencies: ["BNB", "USDT", "ETH"],
   },
   {
-    id: 'flutterwave',
-    name: 'Flutterwave',
-    logo: '💸',
-    type: 'local',
-    fees: '2.5%',
-    processingTime: '5-10 minutes',
-    supportedCurrencies: ['NGN', 'KES', 'ZAR', 'GHS', 'ETB']
+    id: "flutterwave",
+    name: "Flutterwave",
+    logo: "💸",
+    type: "local",
+    fees: "2.5%",
+    processingTime: "5-10 minutes",
+    supportedCurrencies: ["NGN", "KES", "ZAR", "GHS", "ETB"],
   },
   {
-    id: 'mpesa',
-    name: 'M-Pesa',
-    logo: '📱',
-    type: 'mobile',
-    fees: '1.0%',
-    processingTime: '1-3 minutes',
-    supportedCurrencies: ['KES']
+    id: "mpesa",
+    name: "M-Pesa",
+    logo: "📱",
+    type: "mobile",
+    fees: "1.0%",
+    processingTime: "1-3 minutes",
+    supportedCurrencies: ["KES"],
   },
   {
-    id: 'mtn',
-    name: 'MTN Mobile Money',
-    logo: '📲',
-    type: 'mobile',
-    fees: '1.2%',
-    processingTime: '2-5 minutes',
-    supportedCurrencies: ['GHS', 'NGN']
-  }
+    id: "mtn",
+    name: "MTN Mobile Money",
+    logo: "📲",
+    type: "mobile",
+    fees: "1.2%",
+    processingTime: "2-5 minutes",
+    supportedCurrencies: ["GHS", "NGN"],
+  },
 ];
 
 export default function LocalCurrencyWallet() {
-  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(africanCurrencies[0]);
-  const [amount, setAmount] = useState<string>('');
-  const [selectedProvider, setSelectedProvider] = useState<PaymentProvider | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(
+    africanCurrencies[0]
+  );
+  const [amount, setAmount] = useState<string>("");
+  const [selectedProvider, setSelectedProvider] =
+    useState<PaymentProvider | null>(null);
   const [showProviderDialog, setShowProviderDialog] = useState(false);
-  
+
   // Floating widget state
   const [position, setPosition] = useState<Position>({ x: 20, y: 20 });
   const [isMinimized, setIsMinimized] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 });
-  
+
   const widgetRef = useRef<HTMLDivElement>(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
 
@@ -123,23 +184,23 @@ export default function LocalCurrencyWallet() {
 
   // Load saved position from localStorage
   useEffect(() => {
-    const savedPosition = localStorage.getItem('walletWidgetPosition');
-    const savedMinimized = localStorage.getItem('walletWidgetMinimized');
-    const savedVisible = localStorage.getItem('walletWidgetVisible');
-    
+    const savedPosition = localStorage.getItem("walletWidgetPosition");
+    const savedMinimized = localStorage.getItem("walletWidgetMinimized");
+    const savedVisible = localStorage.getItem("walletWidgetVisible");
+
     if (savedPosition) {
       try {
         const pos = JSON.parse(savedPosition);
         setPosition(pos);
       } catch (e) {
-        console.warn('Failed to parse saved position');
+        console.warn("Failed to parse saved position");
       }
     }
-    
+
     if (savedMinimized) {
       setIsMinimized(JSON.parse(savedMinimized));
     }
-    
+
     if (savedVisible !== null) {
       setIsVisible(JSON.parse(savedVisible));
     }
@@ -147,46 +208,46 @@ export default function LocalCurrencyWallet() {
 
   // Save position to localStorage
   useEffect(() => {
-    localStorage.setItem('walletWidgetPosition', JSON.stringify(position));
+    localStorage.setItem("walletWidgetPosition", JSON.stringify(position));
   }, [position]);
 
   useEffect(() => {
-    localStorage.setItem('walletWidgetMinimized', JSON.stringify(isMinimized));
+    localStorage.setItem("walletWidgetMinimized", JSON.stringify(isMinimized));
   }, [isMinimized]);
 
   useEffect(() => {
-    localStorage.setItem('walletWidgetVisible', JSON.stringify(isVisible));
+    localStorage.setItem("walletWidgetVisible", JSON.stringify(isVisible));
   }, [isVisible]);
 
   // Drag functionality
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!widgetRef.current) return;
-    
+
     const rect = widgetRef.current.getBoundingClientRect();
     setDragOffset({
       x: e.clientX - rect.left,
-      y: e.clientY - rect.top
+      y: e.clientY - rect.top,
     });
     setIsDragging(true);
-    
+
     e.preventDefault();
   };
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging) return;
-    
+
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const widgetWidth = isMinimized ? 300 : 400;
     const widgetHeight = isMinimized ? 60 : 600;
-    
+
     let newX = e.clientX - dragOffset.x;
     let newY = e.clientY - dragOffset.y;
-    
+
     // Constrain to viewport
     newX = Math.max(0, Math.min(newX, viewportWidth - widgetWidth));
     newY = Math.max(0, Math.min(newY, viewportHeight - widgetHeight));
-    
+
     setPosition({ x: newX, y: newY });
   };
 
@@ -197,32 +258,32 @@ export default function LocalCurrencyWallet() {
   // Touch support for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!widgetRef.current) return;
-    
+
     const touch = e.touches[0];
     const rect = widgetRef.current.getBoundingClientRect();
     setDragOffset({
       x: touch.clientX - rect.left,
-      y: touch.clientY - rect.top
+      y: touch.clientY - rect.top,
     });
     setIsDragging(true);
   };
 
   const handleTouchMove = (e: TouchEvent) => {
     if (!isDragging) return;
-    
+
     const touch = e.touches[0];
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const widgetWidth = isMinimized ? 300 : 400;
     const widgetHeight = isMinimized ? 60 : 600;
-    
+
     let newX = touch.clientX - dragOffset.x;
     let newY = touch.clientY - dragOffset.y;
-    
+
     // Constrain to viewport
     newX = Math.max(0, Math.min(newX, viewportWidth - widgetWidth));
     newY = Math.max(0, Math.min(newY, viewportHeight - widgetHeight));
-    
+
     setPosition({ x: newX, y: newY });
     e.preventDefault();
   };
@@ -234,38 +295,41 @@ export default function LocalCurrencyWallet() {
   // Event listeners
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.addEventListener('touchmove', handleTouchMove, { passive: false });
-      document.addEventListener('touchend', handleTouchEnd);
-      
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      document.addEventListener("touchend", handleTouchEnd);
+
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-        document.removeEventListener('touchmove', handleTouchMove);
-        document.removeEventListener('touchend', handleTouchEnd);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+        document.removeEventListener("touchmove", handleTouchMove);
+        document.removeEventListener("touchend", handleTouchEnd);
       };
     }
   }, [isDragging, dragOffset]);
 
   const calculateETH = () => {
-    if (!amount || isNaN(Number(amount))) return '0.000';
+    if (!amount || isNaN(Number(amount))) return "0.000";
     const usdAmount = Number(amount) * selectedCurrency.rate;
     const ethAmount = usdAmount / ethPrice;
     return ethAmount.toFixed(6);
   };
 
   const calculateFees = () => {
-    if (!selectedProvider || !amount || isNaN(Number(amount))) return '0.00';
+    if (!selectedProvider || !amount || isNaN(Number(amount))) return "0.00";
     const usdAmount = Number(amount) * selectedCurrency.rate;
-    const feePercentage = parseFloat(selectedProvider.fees.replace('%', '')) / 100;
+    const feePercentage =
+      parseFloat(selectedProvider.fees.replace("%", "")) / 100;
     return (usdAmount * feePercentage).toFixed(2);
   };
 
   const handleConnect = (provider: PaymentProvider) => {
     setSelectedProvider(provider);
     setShowProviderDialog(false);
-    
+
     toast.success(
       <div className="flex items-center gap-2">
         <CheckCircle className="h-4 w-4 text-green-500" />
@@ -276,7 +340,7 @@ export default function LocalCurrencyWallet() {
 
   const handleFundWallet = () => {
     if (!amount || !selectedProvider) {
-      toast.error('Please select amount and payment method');
+      toast.error("Please select amount and payment method");
       return;
     }
 
@@ -286,12 +350,12 @@ export default function LocalCurrencyWallet() {
         <span>Wallet funded with {calculateETH()} ETH! 💰</span>
       </div>
     );
-    
-    setAmount('');
+
+    setAmount("");
   };
 
   const getProvidersByType = (type: string) => {
-    return paymentProviders.filter(p => p.type === type);
+    return paymentProviders.filter((p) => p.type === type);
   };
 
   const toggleMinimize = () => {
@@ -305,10 +369,7 @@ export default function LocalCurrencyWallet() {
   // Show minimized floating button to reopen
   if (!isVisible) {
     return (
-      <div
-        className="load-wallet-btn"
-        style={{ zIndex: 9999 }}
-      >
+      <div className="load-wallet-btn" style={{ zIndex: 9999 }}>
         <Button
           onClick={() => setIsVisible(true)}
           className="h-14 w-14 rounded-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-200"
@@ -325,14 +386,14 @@ export default function LocalCurrencyWallet() {
       <div
         ref={widgetRef}
         className={`fixed z-50 transition-all duration-300 ${
-          isDragging ? 'cursor-grabbing' : ''
+          isDragging ? "cursor-grabbing" : ""
         }`}
         style={{
           left: `${position.x}px`,
           top: `${position.y}px`,
-          width: isMinimized ? '320px' : '400px',
-          maxHeight: isMinimized ? '60px' : '90vh',
-          zIndex: 9999
+          width: isMinimized ? "320px" : "400px",
+          maxHeight: isMinimized ? "60px" : "90vh",
+          zIndex: 9999,
         }}
       >
         <Card className="shadow-2xl border-2 border-primary/20 bg-card/95 backdrop-blur-sm overflow-hidden">
@@ -340,7 +401,7 @@ export default function LocalCurrencyWallet() {
           <div
             ref={dragHandleRef}
             className={`flex items-center justify-between p-3 bg-gradient-to-r from-primary/10 to-secondary/10 border-b border-border/50 ${
-              isDragging ? 'cursor-grabbing' : 'cursor-grab'
+              isDragging ? "cursor-grabbing" : "cursor-grab"
             }`}
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
@@ -350,7 +411,7 @@ export default function LocalCurrencyWallet() {
               <Wallet className="h-5 w-5 text-primary" />
               <span className="font-semibold text-primary">Fund Wallet</span>
             </div>
-            
+
             <div className="flex items-center gap-1">
               <Button
                 variant="ghost"
@@ -358,7 +419,11 @@ export default function LocalCurrencyWallet() {
                 onClick={toggleMinimize}
                 className="h-8 w-8 p-0 hover:bg-muted/50"
               >
-                {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
+                {isMinimized ? (
+                  <Maximize2 className="h-4 w-4" />
+                ) : (
+                  <Minimize2 className="h-4 w-4" />
+                )}
               </Button>
               <Button
                 variant="ghost"
@@ -386,29 +451,42 @@ export default function LocalCurrencyWallet() {
               <CardContent className="space-y-4 p-4">
                 {/* Currency Selection */}
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">From (Local Currency)</Label>
-                  <Select 
-                    value={selectedCurrency.code} 
+                  <Label className="text-sm font-medium">
+                    From (Local Currency)
+                  </Label>
+                  <Select
+                    value={selectedCurrency.code}
                     onValueChange={(value) => {
-                      const currency = africanCurrencies.find(c => c.code === value);
+                      const currency = africanCurrencies.find(
+                        (c) => c.code === value
+                      );
                       if (currency) setSelectedCurrency(currency);
                     }}
                   >
-                    <SelectTrigger className="w-full">
-                      <SelectValue>
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">{selectedCurrency.flag}</span>
-                          <span>{selectedCurrency.code}</span>
-                        </div>
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
+                    <div className="w-full">
+                      <SelectTrigger>
+                        <SelectValue>
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">
+                              {selectedCurrency.flag}
+                            </span>
+                            <span>{selectedCurrency.code}</span>
+                          </div>
+                        </SelectValue>
+                      </SelectTrigger>
+                    </div>
+                    <SelectContent
+                      style={{ zIndex: 10001 }}
+                      className="max-h-60 overflow-y-auto"
+                    >
                       {africanCurrencies.map((currency) => (
                         <SelectItem key={currency.code} value={currency.code}>
                           <div className="flex items-center gap-2">
                             <span className="text-lg">{currency.flag}</span>
                             <span className="font-medium">{currency.code}</span>
-                            <span className="text-muted-foreground text-sm">({currency.name})</span>
+                            <span className="text-muted-foreground text-sm">
+                              ({currency.name})
+                            </span>
                           </div>
                         </SelectItem>
                       ))}
@@ -437,17 +515,29 @@ export default function LocalCurrencyWallet() {
                 {amount && (
                   <div className="bg-muted/30 rounded-lg p-3 space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">You'll receive:</span>
-                      <span className="font-bold text-primary">{calculateETH()} ETH</span>
+                      <span className="text-sm text-muted-foreground">
+                        You'll receive:
+                      </span>
+                      <span className="font-bold text-primary">
+                        {calculateETH()} ETH
+                      </span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-muted-foreground">USD equivalent:</span>
-                      <span className="font-medium">${(Number(amount) * selectedCurrency.rate).toFixed(2)}</span>
+                      <span className="text-muted-foreground">
+                        USD equivalent:
+                      </span>
+                      <span className="font-medium">
+                        ${(Number(amount) * selectedCurrency.rate).toFixed(2)}
+                      </span>
                     </div>
                     {selectedProvider && (
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-muted-foreground">Fees ({selectedProvider.fees}):</span>
-                        <span className="font-medium text-orange-400">${calculateFees()}</span>
+                        <span className="text-muted-foreground">
+                          Fees ({selectedProvider.fees}):
+                        </span>
+                        <span className="font-medium text-orange-400">
+                          ${calculateFees()}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -460,23 +550,32 @@ export default function LocalCurrencyWallet() {
                     <div className="p-3 border border-border rounded-lg bg-primary/5">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="text-xl">{selectedProvider.logo}</span>
+                          <span className="text-xl">
+                            {selectedProvider.logo}
+                          </span>
                           <div>
-                            <p className="font-medium text-sm">{selectedProvider.name}</p>
+                            <p className="font-medium text-sm">
+                              {selectedProvider.name}
+                            </p>
                             <p className="text-xs text-muted-foreground">
-                              {selectedProvider.fees} fee • {selectedProvider.processingTime}
+                              {selectedProvider.fees} fee •{" "}
+                              {selectedProvider.processingTime}
                             </p>
                           </div>
                         </div>
-                        <Button variant="outline" size="sm" onClick={() => setShowProviderDialog(true)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setShowProviderDialog(true)}
+                        >
                           Change
                         </Button>
                       </div>
                     </div>
                   ) : (
-                    <Button 
-                      variant="outline" 
-                      className="w-full h-10 border-dashed"
+                    <Button
+                      variant="outline"
+                      className="w-full h-10 border-dashed hover:text-white active:text-muted-foreground cursor-pointer"
                       onClick={() => setShowProviderDialog(true)}
                     >
                       <CreditCard className="h-4 w-4 mr-2" />
@@ -486,10 +585,10 @@ export default function LocalCurrencyWallet() {
                 </div>
 
                 {/* Fund Button */}
-                <Button 
+                <Button
                   onClick={handleFundWallet}
                   disabled={!amount || !selectedProvider}
-                  className="w-full h-10"
+                  className="w-full h-10 cursor-pointer"
                 >
                   <Wallet className="h-4 w-4 mr-2" />
                   Fund Wallet with {calculateETH()} ETH
@@ -500,9 +599,12 @@ export default function LocalCurrencyWallet() {
                   <div className="flex items-start gap-2">
                     <Shield className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="font-semibold text-primary text-sm">New to Crypto?</h4>
+                      <h4 className="font-semibold text-primary text-sm">
+                        New to Crypto?
+                      </h4>
                       <p className="text-xs text-muted-foreground">
-                        Just select your currency, enter amount, and choose payment method. We handle the conversion!
+                        Just select your currency, enter amount, and choose
+                        payment method. We handle the conversion!
                       </p>
                     </div>
                   </div>
@@ -515,11 +617,12 @@ export default function LocalCurrencyWallet() {
 
       {/* Payment Provider Dialog */}
       <Dialog open={showProviderDialog} onOpenChange={setShowProviderDialog}>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent style={{ zIndex: 9999 }} className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Choose Payment Method</DialogTitle>
             <DialogDescription>
-              Select how you'd like to fund your wallet. Different methods support different currencies.
+              Select how you'd like to fund your wallet. Different methods
+              support different currencies.
             </DialogDescription>
           </DialogHeader>
 
@@ -532,9 +635,15 @@ export default function LocalCurrencyWallet() {
 
             <TabsContent value="local" className="space-y-4 mt-6">
               <div className="grid gap-4">
-                {getProvidersByType('local').map((provider) => (
-                  <Card key={provider.id} className="cursor-pointer hover:bg-muted/30 transition-colors">
-                    <CardContent className="p-4" onClick={() => handleConnect(provider)}>
+                {getProvidersByType("local").map((provider) => (
+                  <Card
+                    key={provider.id}
+                    className="cursor-pointer hover:bg-muted/30 transition-colors"
+                  >
+                    <CardContent
+                      className="p-4"
+                      onClick={() => handleConnect(provider)}
+                    >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{provider.logo}</span>
@@ -542,18 +651,26 @@ export default function LocalCurrencyWallet() {
                             <div className="flex items-center gap-2">
                               <p className="font-semibold">{provider.name}</p>
                               {provider.popular && (
-                                <Badge variant="secondary" className="text-xs">Popular</Badge>
+                                <Badge variant="secondary" className="text-xs">
+                                  Popular
+                                </Badge>
                               )}
                             </div>
                             <p className="text-sm text-muted-foreground">
                               {provider.fees} fee • {provider.processingTime}
                             </p>
                             <div className="flex gap-2 mt-1">
-                              {provider.supportedCurrencies.slice(0, 3).map((curr) => (
-                                <Badge key={curr} variant="outline" className="text-xs">
-                                  {curr}
-                                </Badge>
-                              ))}
+                              {provider.supportedCurrencies
+                                .slice(0, 3)
+                                .map((curr) => (
+                                  <Badge
+                                    key={curr}
+                                    variant="outline"
+                                    className="text-xs"
+                                  >
+                                    {curr}
+                                  </Badge>
+                                ))}
                             </div>
                           </div>
                         </div>
@@ -567,9 +684,15 @@ export default function LocalCurrencyWallet() {
 
             <TabsContent value="mobile" className="space-y-4 mt-6">
               <div className="grid gap-4">
-                {getProvidersByType('mobile').map((provider) => (
-                  <Card key={provider.id} className="cursor-pointer hover:bg-muted/30 transition-colors">
-                    <CardContent className="p-4" onClick={() => handleConnect(provider)}>
+                {getProvidersByType("mobile").map((provider) => (
+                  <Card
+                    key={provider.id}
+                    className="cursor-pointer hover:bg-muted/30 transition-colors"
+                  >
+                    <CardContent
+                      className="p-4"
+                      onClick={() => handleConnect(provider)}
+                    >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{provider.logo}</span>
@@ -586,7 +709,11 @@ export default function LocalCurrencyWallet() {
                             </p>
                             <div className="flex gap-2 mt-1">
                               {provider.supportedCurrencies.map((curr) => (
-                                <Badge key={curr} variant="outline" className="text-xs">
+                                <Badge
+                                  key={curr}
+                                  variant="outline"
+                                  className="text-xs"
+                                >
                                   {curr}
                                 </Badge>
                               ))}
@@ -603,9 +730,15 @@ export default function LocalCurrencyWallet() {
 
             <TabsContent value="crypto" className="space-y-4 mt-6">
               <div className="grid gap-4">
-                {getProvidersByType('crypto').map((provider) => (
-                  <Card key={provider.id} className="cursor-pointer hover:bg-muted/30 transition-colors">
-                    <CardContent className="p-4" onClick={() => handleConnect(provider)}>
+                {getProvidersByType("crypto").map((provider) => (
+                  <Card
+                    key={provider.id}
+                    className="cursor-pointer hover:bg-muted/30 transition-colors"
+                  >
+                    <CardContent
+                      className="p-4"
+                      onClick={() => handleConnect(provider)}
+                    >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{provider.logo}</span>
@@ -613,7 +746,9 @@ export default function LocalCurrencyWallet() {
                             <div className="flex items-center gap-2">
                               <p className="font-semibold">{provider.name}</p>
                               {provider.popular && (
-                                <Badge variant="secondary" className="text-xs">Popular</Badge>
+                                <Badge variant="secondary" className="text-xs">
+                                  Popular
+                                </Badge>
                               )}
                             </div>
                             <p className="text-sm text-muted-foreground">
@@ -621,7 +756,11 @@ export default function LocalCurrencyWallet() {
                             </p>
                             <div className="flex gap-2 mt-1">
                               {provider.supportedCurrencies.map((curr) => (
-                                <Badge key={curr} variant="outline" className="text-xs">
+                                <Badge
+                                  key={curr}
+                                  variant="outline"
+                                  className="text-xs"
+                                >
                                   {curr}
                                 </Badge>
                               ))}

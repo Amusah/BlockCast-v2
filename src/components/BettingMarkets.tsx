@@ -761,7 +761,7 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
   return (
     <div className="space-y-6">
       {/* Hero Section - Enhanced Mobile Layout */}
-      <div className="p-4 md:p-6 lg:p-8">
+      <div className="py-4 md:py-6 lg:py-8">
         <div className="text-center mb-4 md:mb-6">
           {/* Truth Markets heading removed as per requirements */}
         </div>
@@ -789,7 +789,7 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
               onValueChange={setSelectedCategory}
             >
               <SelectTrigger
-                className="w-40 h-11 bg-background/50 border-primary/30 text-sm"
+                className="w-40 flex-1 h-11 bg-background/50 border-primary/30 text-sm"
                 {...({} as any)}
               >
                 <SelectValue placeholder="All Categories" />
@@ -805,7 +805,7 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
 
             <Select value="trending" onValueChange={() => {}}>
               <SelectTrigger
-                className="w-32 h-11 bg-background/50 border-primary/30 text-sm"
+                className="w-40 md:w-32 flex-1 h-11 bg-background/50 border-primary/30 text-sm"
                 {...({} as any)}
               >
                 <SelectValue placeholder="Trending" />
@@ -819,7 +819,7 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
 
             <Select value="all" onValueChange={() => {}}>
               <SelectTrigger
-                className="w-32 h-11 bg-background/50 border-primary/30 text-sm"
+                className="w-40 md:w-32 flex-1 h-11 bg-background/50 border-primary/30 text-sm"
                 {...({} as any)}
               >
                 <SelectValue placeholder="All Types" />
