@@ -342,7 +342,7 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
       </Card>
 
       {/* Tab Navigation */}
-      <div className="flex items-center gap-1 p-1 bg-muted/50 rounded-lg">
+      <div className="flex flex-wrap items-center gap-1 p-2 bg-muted/50 rounded-lg">
         {[
           { id: 'overview', label: t('overview'), icon: Target },
           { id: 'comments', label: t('comments'), icon: MessageCircle, count: comments.length },

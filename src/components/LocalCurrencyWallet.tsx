@@ -506,7 +506,8 @@ export default function LocalCurrencyWallet() {
                       placeholder="0.00"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
-                      className="pl-8 font-semibold ml-4"
+                      className="font-semibold"
+                      style={{ paddingLeft: "3rem" }}
                     />
                   </div>
                 </div>
