@@ -24,7 +24,7 @@ interface FooterProps {
 
 export default function Footer({ onNavigate }: FooterProps) {
   const navigate = useNavigate();
-  const [toggleSupport, setToggleSupport] = useState(false);
+  // const [toggleSupport, setToggleSupport] = useState(false);
 
   const handleLinkClick = (page: string) => {
     // Map page names to actual routes
@@ -51,9 +51,9 @@ export default function Footer({ onNavigate }: FooterProps) {
     navigate('/');
   };
 
-  const handleToggleSupport = () => {
-    setToggleSupport(!toggleSupport);
-  };
+  // const handleToggleSupport = () => {
+  //   setToggleSupport(!toggleSupport);
+  // };
 
   return (
     <footer className="bg-card border-t border-border mt-12">
@@ -74,7 +74,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   className="w-8 h-8 rounded-lg"
                 />
                 <div>
-                  <h3 className="text-lg font-bold text-primary">Blockcast</h3>
+                  <h3 className="text-lg font-bold">Blockcast</h3>
                 </div>
               </button>
             </div>
@@ -167,14 +167,14 @@ export default function Footer({ onNavigate }: FooterProps) {
 
         {/* Bottom Footer */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-muted-foreground text-center w-full">
+          <div className="text-sm text-muted-foreground text-center w-full h-20 ">
             <p>
               &copy; {new Date().getFullYear()} Blockcast. Fighting
               misinformation through truth.
             </p>
           </div>
 
-          <div className="flex items-center gap-4 w-full hidden lg:flex">
+          {/* <div className="flex items-center gap-4 w-full hidden lg:flex">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-sm text-muted-foreground">
@@ -187,7 +187,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 AI Verification: Live
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

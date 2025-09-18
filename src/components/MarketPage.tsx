@@ -748,7 +748,7 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
           </Card>
 
           {/* Market Stats */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle className="text-base">{t('marketStatistics')}</CardTitle>
             </CardHeader>
@@ -770,7 +770,7 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
                 <span className="font-medium text-green-500">High</span>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </div>

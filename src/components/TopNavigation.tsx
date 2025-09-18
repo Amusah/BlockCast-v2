@@ -69,7 +69,7 @@ export default function TopNavigation({ isDarkMode, onToggleDarkMode, userBalanc
                   className="w-8 h-8 rounded-lg"
                 />
                 <div>
-                  <h1 className="text-lg font-bold text-primary">Blockcast</h1>
+                  <h1 className="text-lg font-bold">Blockcast</h1>
                 </div>
               </button>
             </div>
