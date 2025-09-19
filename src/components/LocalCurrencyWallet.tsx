@@ -161,7 +161,17 @@ const paymentProviders: PaymentProvider[] = [
   },
 ];
 
-export default function LocalCurrencyWallet() {
+interface LocalCurrencyWalletProps {
+  visible?: boolean;
+  onClose?: () => void;
+  onOpen?: () => void;
+}
+
+export default function LocalCurrencyWallet({
+  visible,
+  onClose,
+  onOpen,
+}: LocalCurrencyWalletProps) {
   const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(
     africanCurrencies[0]
   );
@@ -364,14 +374,21 @@ export default function LocalCurrencyWallet() {
 
   const closeWidget = () => {
     setIsVisible(false);
+    if (onClose) onClose();
   };
 
+  // If parent passed a visibility prop, prefer it (controlled)
+  const effectiveVisible = typeof visible === "boolean" ? visible : isVisible;
+
   // Show minimized floating button to reopen
-  if (!isVisible) {
+  if (!effectiveVisible) {
     return (
-      <div className="load-wallet-btn" style={{ zIndex: 9999 }}>
+      <div className="load-wallet-btn hidden" style={{ zIndex: 9999 }}>
         <Button
-          onClick={() => setIsVisible(true)}
+          onClick={() => {
+            setIsVisible(true);
+            if (onOpen) onOpen();
+          }}
           className="h-14 w-14 rounded-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-200"
         >
           <Wallet className="h-6 w-6" />
