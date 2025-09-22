@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
@@ -17,6 +17,8 @@ import VerificationHistory from './VerificationHistory';
 import type { VerificationResult } from './VerificationResults';
 // Import the accordion components
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui/accordion';
+
+import { useLocation } from 'react-router-dom';
 
 interface SettingsProps {
   isDarkMode: boolean;
@@ -72,6 +74,18 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
     toast.error('Account deletion requires email confirmation. Check your inbox.');
   };
 
+  const handleSetActiveTabe = () => {
+
+  };
+
+  const location = useLocation();
+  const active = location.state?.active || activeTab; // fallback
+  // console.log(location);
+
+  useEffect(() => {
+    setActiveTab(active)
+  }, [active])
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Custom styles for accordion items */}
@@ -125,6 +139,7 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
           </p>
         </div>
       </div>
+      {}
 
       {/* Settings Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

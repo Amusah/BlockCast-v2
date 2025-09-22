@@ -89,9 +89,9 @@ export default function TopNavigation({
   ];
 
   const handleNavClick = (path: string = '', activeTab: string = '') => {
-    navigate(path);
+    navigate(path, {state:{active: `${activeTab}`}});
     setShowMobileMenu(false);
-    console.log('Navigating to:', path, 'Active Tab:', activeTab);
+    // console.log('Navigating to:', path, 'Active Tab:', activeTab);
   };
 
   const handleLogoClick = () => {
@@ -239,12 +239,12 @@ export default function TopNavigation({
                     <User className="h-4 w-4 mr-2" />
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleNavClick("/settings")}>
+                  <DropdownMenuItem onClick={() => handleNavClick("/settings", 'portfolio')}>
                     <BriefcaseBusiness className="h-4 w-4 mr-2" />
                     Portfolio
                   </DropdownMenuItem>
                   {/* <DropdownMenuSeparator /> */}
-                  <DropdownMenuItem onClick={() => handleNavClick("/settings")}>
+                  <DropdownMenuItem onClick={() => handleNavClick("/settings", 'history')}>
                     <History className="h-4 w-4 mr-2" />
                     History
                   </DropdownMenuItem>
