@@ -469,23 +469,23 @@ export default function App() {
             />
           )
         },
-        {
-          path: "/verify-truth",
-          element: (
-            <div className="space-y-6 max-w-4xl mx-auto">
-              <VerificationInput 
-                onSubmit={handleVerifyTruth}
-                isLoading={isVerifying}
-              />
-              {verificationResult && (
-                <VerificationResults 
-                  result={verificationResult}
-                  onNewVerification={() => setVerificationResult(null)}
-                />
-              )}
-            </div>
-          )
-        },
+        // {
+        //   path: "/verify-truth",
+        //   element: (
+        //     <div className="space-y-6 max-w-4xl mx-auto">
+        //       <VerificationInput 
+        //         onSubmit={handleVerifyTruth}
+        //         isLoading={isVerifying}
+        //       />
+        //       {verificationResult && (
+        //         <VerificationResults 
+        //           result={verificationResult}
+        //           onNewVerification={() => setVerificationResult(null)}
+        //         />
+        //       )}
+        //     </div>
+        //   )
+        // },
         {
           path: "/community-hub",
           element: <CommunityHub />

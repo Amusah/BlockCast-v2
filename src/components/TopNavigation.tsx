@@ -22,7 +22,10 @@ import {
   ChevronDown,
   Search,
   HandCoins,
-} from "lucide-react";
+  BriefcaseBusiness,
+  History,
+  User,
+  } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -65,12 +68,12 @@ export default function TopNavigation({
   // Simplified main navigation - only core features
   const mainNavItems = [
     { id: "markets", label: "Truth Markets", icon: TrendingUp, path: "/" },
-    {
-      id: "verify",
-      label: "Verify Truth",
-      icon: Shield,
-      path: "/verify-truth",
-    },
+    // {
+    //   id: "verify",
+    //   label: "Verify Truth",
+    //   icon: Shield,
+    //   path: "/verify-truth",
+    // },
     {
       id: "community-hub",
       label: "community Hub",
@@ -85,9 +88,10 @@ export default function TopNavigation({
     { code: "sw", name: "Kiswahili", flag: "🇰🇪" },
   ];
 
-  const handleNavClick = (path: string = '') => {
+  const handleNavClick = (path: string = '', activeTab: string = '') => {
     navigate(path);
     setShowMobileMenu(false);
+    console.log('Navigating to:', path, 'Active Tab:', activeTab);
   };
 
   const handleLogoClick = () => {
@@ -231,16 +235,29 @@ export default function TopNavigation({
                     </div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => handleNavClick("/settings")}>
-                    <Settings className="h-4 w-4 mr-2" />
-                    Settings
+                  <DropdownMenuItem onClick={() => handleNavClick("/settings", 'profile')}>
+                    <User className="h-4 w-4 mr-2" />
+                    Profile
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => handleNavClick("/settings")}>
+                    <BriefcaseBusiness className="h-4 w-4 mr-2" />
+                    Portfolio
+                  </DropdownMenuItem>
+                  {/* <DropdownMenuSeparator /> */}
+                  <DropdownMenuItem onClick={() => handleNavClick("/settings")}>
+                    <History className="h-4 w-4 mr-2" />
+                    History
+                  </DropdownMenuItem>
+                  {/* <DropdownMenuSeparator /> */}
                   <DropdownMenuItem onSelect={() => setIsVisible(true)}>
                     <Wallet className="h-4 w-4 mr-2" />
                     Fund Wallet
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => handleNavClick("/settings")}>
+                    <Settings className="h-4 w-4 mr-2" />
+                    Settings
+                  </DropdownMenuItem>
                   <DropdownMenuItem className="text-destructive">
                     Sign Out
                   </DropdownMenuItem>

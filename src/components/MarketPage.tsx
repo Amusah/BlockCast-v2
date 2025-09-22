@@ -1,28 +1,70 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button, type ButtonProps } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  TrendingUp, TrendingDown, Users, Clock, Target, Star, MessageCircle, 
-  ArrowLeft, Share2, Heart, Bookmark, Zap, Globe, Shield, 
-  ThumbsUp, ThumbsDown, Send, Filter, Eye, AlertCircle,
-  CheckCircle2, Clock3, FileText, Scale
-} from 'lucide-react';
-import { toast } from 'sonner';
-import { useLanguage } from '@/components/LanguageContext';
-import { BettingMarket } from '@/components/BettingMarkets';
-import { generateMockComments, getMarketRules, formatTimeAgo, MarketComment, MarketRule } from '@/utils/marketData';
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button, type ButtonProps } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  TrendingUp,
+  TrendingDown,
+  Users,
+  Clock,
+  Target,
+  Star,
+  MessageCircle,
+  ArrowLeft,
+  Share2,
+  Heart,
+  Bookmark,
+  Zap,
+  Globe,
+  Shield,
+  ThumbsUp,
+  ThumbsDown,
+  Send,
+  Filter,
+  Eye,
+  AlertCircle,
+  CheckCircle2,
+  Clock3,
+  FileText,
+  Scale,
+} from "lucide-react";
+import { toast } from "sonner";
+import { useLanguage } from "@/components/LanguageContext";
+import { BettingMarket } from "@/components/BettingMarkets";
+import {
+  generateMockComments,
+  getMarketRules,
+  formatTimeAgo,
+  MarketComment,
+  MarketRule,
+} from "@/utils/marketData";
 
 interface MarketPageProps {
   market: BettingMarket;
-  onPlaceBet: (marketId: string, position: 'yes' | 'no', amount: number) => void;
+  onPlaceBet: (
+    marketId: string,
+    position: "yes" | "no",
+    amount: number
+  ) => void;
   userBalance: number;
   onBack: () => void;
 }
@@ -36,22 +78,45 @@ interface ProfitCalculation {
 
 const quickCastAmounts = [0.01, 0.05, 0.1, 0.5, 1.0];
 
-export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: MarketPageProps) {
+export default function MarketPage({
+  market,
+  onPlaceBet,
+  userBalance,
+  onBack,
+}: MarketPageProps) {
   const { t, language } = useLanguage();
-  const [castPosition, setCastPosition] = useState<'yes' | 'no'>('yes');
-  const [castAmount, setCastAmount] = useState<string>('');
-  const [profitCalculation, setProfitCalculation] = useState<ProfitCalculation | null>(null);
-  const [newComment, setNewComment] = useState<string>('');
-  const [commentPosition, setCommentPosition] = useState<'yes' | 'no' | 'neutral'>('neutral');
+  const [castPosition, setCastPosition] = useState<"yes" | "no">("yes");
+  const [castAmount, setCastAmount] = useState<string>("");
+  const [profitCalculation, setProfitCalculation] =
+    useState<ProfitCalculation | null>(null);
+  const [newComment, setNewComment] = useState<string>("");
+  const [commentPosition, setCommentPosition] = useState<
+    "yes" | "no" | "neutral"
+  >("neutral");
   const [comments] = useState<MarketComment[]>(generateMockComments(market.id));
   const [rules] = useState<MarketRule[]>(getMarketRules(market.id));
   const [likedComments, setLikedComments] = useState<Set<string>>(new Set());
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'comments' | 'rules' | 'analysis'>('overview');
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "comments" | "rules" | "analysis" | "verify"
+  >("overview");
+  const [claim, setClaim] = useState<string>("");
+  const [isTrue, setIsTrue] = useState<string>("");
+  const [isVerifying, setIsVerifying] = useState<boolean>(false);
+
+  console.log(market, isTrue);
+
+  const handleVerifyClaim = (value: string) => {
+    setIsTrue(value);
+    console.log(isTrue);
+  };
 
   // Helper function to get translated text
-  const getTranslatedText = (text: string, translations?: { en: string; fr: string; sw: string }) => {
+  const getTranslatedText = (
+    text: string,
+    translations?: { en: string; fr: string; sw: string }
+  ) => {
     if (!translations) return text;
     return translations[language] || translations.en || text;
   };
@@ -72,32 +137,34 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
   const getTimeRemaining = (expiresAt: Date): string => {
     const now = new Date();
     const diff = expiresAt.getTime() - now.getTime();
-    
-    if (diff <= 0) return t('expired');
-    
+
+    if (diff <= 0) return t("expired");
+
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    
+
     if (days > 0) return `${days}d ${hours}h`;
     if (hours > 0) return `${hours}h ${minutes}m`;
     return `${minutes}m`;
   };
 
-  const handleQuickCast = (position: 'yes' | 'no', amount: number) => {
+  const handleQuickCast = (position: "yes" | "no", amount: number) => {
     if (amount > userBalance) {
-      toast.error(t('insufficientBalance') || 'Insufficient balance');
+      toast.error(t("insufficientBalance") || "Insufficient balance");
       return;
     }
-    
+
     onPlaceBet(market.id, position, amount);
-    
+
     // Success feedback
-    toast.success(`Truth position cast: ${position.toUpperCase()} with ${amount} ETH`);
+    toast.success(
+      `Truth position cast: ${position.toUpperCase()} with ${amount} ETH`
+    );
   };
 
-  const calculateProfit = (amount: number, position: 'yes' | 'no') => {
-    const odds = position === 'yes' ? market.yesOdds : market.noOdds;
+  const calculateProfit = (amount: number, position: "yes" | "no") => {
+    const odds = position === "yes" ? market.yesOdds : market.noOdds;
     const potentialReturn = amount * odds;
     const profit = potentialReturn - amount;
     return { amount, potential: potentialReturn, profit };
@@ -113,7 +180,7 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
     }
   };
 
-  const handlePositionChange = (position: 'yes' | 'no') => {
+  const handlePositionChange = (position: "yes" | "no") => {
     setCastPosition(position);
     const amount = parseFloat(castAmount);
     if (!isNaN(amount) && amount > 0) {
@@ -124,31 +191,33 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
   const handleCustomCast = () => {
     const amount = parseFloat(castAmount);
     if (isNaN(amount) || amount <= 0) {
-      toast.error('Please enter a valid amount');
+      toast.error("Please enter a valid amount");
       return;
     }
     if (amount > userBalance) {
-      toast.error(t('insufficientBalance') || 'Insufficient balance');
+      toast.error(t("insufficientBalance") || "Insufficient balance");
       return;
     }
-    
+
     onPlaceBet(market.id, castPosition, amount);
-    setCastAmount('');
+    setCastAmount("");
     setProfitCalculation(null);
-    
-    toast.success(`Custom truth position cast: ${castPosition.toUpperCase()} with ${amount} ETH`);
+
+    toast.success(
+      `Custom truth position cast: ${castPosition.toUpperCase()} with ${amount} ETH`
+    );
   };
 
   const handleCommentSubmit = () => {
     if (!newComment.trim()) {
-      toast.error('Please enter a comment');
+      toast.error("Please enter a comment");
       return;
     }
-    
+
     // Mock comment submission
-    toast.success('Comment posted successfully!');
-    setNewComment('');
-    setCommentPosition('neutral');
+    toast.success("Comment posted successfully!");
+    setNewComment("");
+    setCommentPosition("neutral");
   };
 
   const handleLikeComment = (commentId: string) => {
@@ -163,21 +232,31 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
 
   const getRuleIcon = (category: string) => {
     switch (category) {
-      case 'resolution': return CheckCircle2;
-      case 'timing': return Clock3;
-      case 'eligibility': return FileText;
-      case 'verification': return Shield;
-      default: return AlertCircle;
+      case "resolution":
+        return CheckCircle2;
+      case "timing":
+        return Clock3;
+      case "eligibility":
+        return FileText;
+      case "verification":
+        return Shield;
+      default:
+        return AlertCircle;
     }
   };
 
   const getRuleColor = (category: string) => {
     switch (category) {
-      case 'resolution': return 'text-green-500';
-      case 'timing': return 'text-blue-500';
-      case 'eligibility': return 'text-yellow-500';
-      case 'verification': return 'text-primary';
-      default: return 'text-muted-foreground';
+      case "resolution":
+        return "text-green-500";
+      case "timing":
+        return "text-blue-500";
+      case "eligibility":
+        return "text-yellow-500";
+      case "verification":
+        return "text-primary";
+      default:
+        return "text-muted-foreground";
     }
   };
 
@@ -185,44 +264,46 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Button 
+        <Button
           variant="ghost"
           size="sm"
-          onClick={onBack} 
+          onClick={onBack}
           className="gap-2"
           {...({} as any)}
         >
           <ArrowLeft className="h-4 w-4" />
-          {t('backToMarkets')}
+          {t("backToMarkets")}
         </Button>
-        
+
         <div className="flex-1" />
-        
+
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setIsLiked(!isLiked)}
-            className={`gap-1 ${isLiked ? 'text-red-500' : ''}`}
+            className={`gap-1 ${isLiked ? "text-red-500" : ""}`}
             {...({} as any)}
           >
-            <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+            <Heart className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`} />
             {formatNumber(Math.floor(Math.random() * 500) + 100)}
           </Button>
-          
+
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setIsBookmarked(!isBookmarked)}
-            className={`gap-1 ${isBookmarked ? 'text-primary' : ''}`}
+            className={`gap-1 ${isBookmarked ? "text-primary" : ""}`}
             {...({} as any)}
           >
-            <Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} />
+            <Bookmark
+              className={`h-4 w-4 ${isBookmarked ? "fill-current" : ""}`}
+            />
           </Button>
-          
+
           <Button variant="ghost" size="sm" className="gap-1" {...({} as any)}>
             <Share2 className="h-4 w-4" />
-            {t('share')}
+            {t("share")}
           </Button>
         </div>
       </div>
@@ -231,24 +312,30 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
       <Card className="overflow-hidden">
         {market.imageUrl && (
           <div className="relative h-48 overflow-hidden">
-            <img 
-              src={market.imageUrl} 
+            <img
+              src={market.imageUrl}
               alt={getTranslatedText(market.claim, market.claimTranslations)}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
-            
+
             {market.trending && (
               <div className="absolute top-4 left-4">
-                <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
+                <Badge
+                  variant="secondary"
+                  className="bg-primary/20 text-primary border-primary/30"
+                >
                   <TrendingUp className="h-3 w-3 mr-1" />
-                  {t('trending')}
+                  {t("trending")}
                 </Badge>
               </div>
             )}
-            
+
             <div className="absolute bottom-4 left-4 right-4">
-              <Badge variant="outline" className="text-xs mb-2 bg-background/80">
+              <Badge
+                variant="outline"
+                className="text-xs mb-2 bg-background/80"
+              >
                 {market.category}
               </Badge>
               <h1 className="text-xl font-bold text-white mb-2">
@@ -263,9 +350,12 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
             {/* Market Info */}
             <div className="lg:col-span-2 space-y-4">
               <p className="text-muted-foreground">
-                {getTranslatedText(market.description, market.descriptionTranslations)}
+                {getTranslatedText(
+                  market.description,
+                  market.descriptionTranslations
+                )}
               </p>
-              
+
               {/* Location & Source */}
               <div className="flex items-center gap-6 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
@@ -278,28 +368,38 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4" />
-                  <span>{t('expiresIn')} {getTimeRemaining(market.expiresAt)}</span>
+                  <span>
+                    {t("expiresIn")} {getTimeRemaining(market.expiresAt)}
+                  </span>
                 </div>
               </div>
 
               {/* Pool Distribution */}
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">{t('truthVerificationPool')}</span>
-                  <span className="text-sm font-bold">{formatCurrency(market.totalPool)}</span>
+                  <span className="text-sm font-medium">
+                    {t("truthVerificationPool")}
+                  </span>
+                  <span className="text-sm font-bold">
+                    {formatCurrency(market.totalPool)}
+                  </span>
                 </div>
-                <Progress 
-                  value={(market.yesPool / market.totalPool) * 100} 
+                <Progress
+                  value={(market.yesPool / market.totalPool) * 100}
                   className="h-3"
                 />
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-primary">{t('truthYes')}</span>
-                    <span className="font-medium">{formatCurrency(market.yesPool)}</span>
+                    <span className="text-primary">{t("truthYes")}</span>
+                    <span className="font-medium">
+                      {formatCurrency(market.yesPool)}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-secondary">{t('truthNo')}</span>
-                    <span className="font-medium">{formatCurrency(market.noPool)}</span>
+                    <span className="text-secondary">{t("truthNo")}</span>
+                    <span className="font-medium">
+                      {formatCurrency(market.noPool)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -309,31 +409,49 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div className="text-center p-4 bg-primary/10 rounded-lg border border-primary/20">
-                  <div className="text-sm text-muted-foreground mb-1">{t('truthYes')}</div>
-                  <div className="text-2xl font-bold text-primary">{market.yesOdds.toFixed(2)}x</div>
+                  <div className="text-sm text-muted-foreground mb-1">
+                    {t("truthYes")}
+                  </div>
+                  <div className="text-2xl font-bold text-primary">
+                    {market.yesOdds.toFixed(2)}x
+                  </div>
                 </div>
                 <div className="text-center p-4 bg-secondary/10 rounded-lg border border-secondary/20">
-                  <div className="text-sm text-muted-foreground mb-1">{t('truthNo')}</div>
-                  <div className="text-2xl font-bold text-secondary">{market.noOdds.toFixed(2)}x</div>
+                  <div className="text-sm text-muted-foreground mb-1">
+                    {t("truthNo")}
+                  </div>
+                  <div className="text-2xl font-bold text-secondary">
+                    {market.noOdds.toFixed(2)}x
+                  </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4" />
-                  <span>{formatNumber(market.totalCasters)} {t('verifiers')}</span>
+                  <span>
+                    {formatNumber(market.totalCasters)} {t("verifiers")}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Eye className="h-4 w-4" />
-                  <span>{formatNumber(Math.floor(Math.random() * 10000) + 5000)} {t('views')}</span>
+                  <span>
+                    {formatNumber(Math.floor(Math.random() * 10000) + 5000)}{" "}
+                    {t("views")}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MessageCircle className="h-4 w-4" />
-                  <span>{comments.length} {t('comments')}</span>
+                  <span>
+                    {comments.length} {t("comments")}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="h-4 w-4" />
-                  <span>{formatNumber(Math.floor(Math.random() * 500) + 100)} {t('likes')}</span>
+                  <span>
+                    {formatNumber(Math.floor(Math.random() * 500) + 100)}{" "}
+                    {t("likes")}
+                  </span>
                 </div>
               </div>
             </div>
@@ -344,74 +462,98 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
       {/* Tab Navigation */}
       <div className="flex flex-wrap items-center gap-1 p-2 bg-muted/50 rounded-lg">
         {[
-          { id: 'overview', label: t('overview'), icon: Target },
-          { id: 'comments', label: t('comments'), icon: MessageCircle, count: comments.length },
-          { id: 'rules', label: t('rules'), icon: Scale },
-          { id: 'analysis', label: t('aiAnalysis'), icon: Zap }
-        ].map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <Button
-              key={tab.id}
-              variant={activeTab === tab.id ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setActiveTab(tab.id as any)}
-              className="flex-1 gap-2"
-              {...({} as any)}
-            >
-              <Icon className="h-4 w-4" />
-              {tab.label}
-              {tab.count && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {tab.count}
-                </Badge>
-              )}
-            </Button>
-          );
-        })}
+          { id: "overview", label: t("overview"), icon: Target },
+          {
+            id: "comments",
+            label: t("comments"),
+            icon: MessageCircle,
+            count: comments.length,
+          },
+          { id: "rules", label: t("rules"), icon: Scale },
+          { id: "analysis", label: t("aiAnalysis"), icon: Zap },
+          market.disputable && {
+            id: "verify",
+            label: t("Verify Truth"),
+            icon: Shield,
+          },
+        ]
+          .filter(Boolean)
+          .map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <Button
+                key={tab.id}
+                variant={activeTab === tab.id ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setActiveTab(tab.id as any)}
+                className="flex-1 gap-2"
+                {...({} as any)}
+              >
+                <Icon className="h-4 w-4" />
+                {tab.label}
+                {tab.count && (
+                  <Badge variant="secondary" className="ml-1 text-xs">
+                    {tab.count}
+                  </Badge>
+                )}
+              </Button>
+            );
+          })}
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-2">
           {/* Overview Tab */}
-          {activeTab === 'overview' && (
+          {activeTab === "overview" && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5" />
-                  {t('marketOverview')}
+                  {t("marketOverview")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h3 className="font-semibold mb-2">{t('marketDescription')}</h3>
+                  <h3 className="font-semibold mb-2">
+                    {t("marketDescription")}
+                  </h3>
                   <p className="text-muted-foreground">
-                    {getTranslatedText(market.description, market.descriptionTranslations)}
+                    {getTranslatedText(
+                      market.description,
+                      market.descriptionTranslations
+                    )}
                   </p>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div>
-                  <h3 className="font-semibold mb-2">{t('verificationMethodology')}</h3>
+                  <h3 className="font-semibold mb-2">
+                    {t("verificationMethodology")}
+                  </h3>
                   <p className="text-muted-foreground">
-                    This market uses AI-powered truth verification combined with community consensus. 
-                    Our system analyzes multiple credible sources, cross-references data, and incorporates 
-                    expert analysis to determine the most accurate outcome.
+                    This market uses AI-powered truth verification combined with
+                    community consensus. Our system analyzes multiple credible
+                    sources, cross-references data, and incorporates expert
+                    analysis to determine the most accurate outcome.
                   </p>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div>
-                  <h3 className="font-semibold mb-2">{t('marketStatus')}</h3>
+                  <h3 className="font-semibold mb-2">{t("marketStatus")}</h3>
                   <div className="flex items-center gap-2">
-                    <Badge variant={market.status === 'active' ? 'default' : 'secondary'}>
+                    <Badge
+                      variant={
+                        market.status === "active" ? "default" : "secondary"
+                      }
+                    >
                       {market.status.toUpperCase()}
                     </Badge>
                     <span className="text-sm text-muted-foreground">
-                      {t('expiresIn')} {getTimeRemaining(market.expiresAt)}
+                      {t("expiresIn")} {getTimeRemaining(market.expiresAt)}
                     </span>
                   </div>
                 </div>
@@ -420,38 +562,41 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
           )}
 
           {/* Comments Tab */}
-          {activeTab === 'comments' && (
+          {activeTab === "comments" && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MessageCircle className="h-5 w-5" />
-                  {t('communityDiscussion')} ({comments.length})
+                  {t("communityDiscussion")} ({comments.length})
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Add Comment */}
                 <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
-                  <Label>{t('shareYourThoughts')}</Label>
+                  <Label>{t("shareYourThoughts")}</Label>
                   <Textarea
-                    placeholder={t('writeCommentPlaceholder')}
+                    placeholder={t("writeCommentPlaceholder")}
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     className="min-h-20"
                   />
                   <div className="flex items-center justify-between">
-                    <Select value={commentPosition} onValueChange={(value: any) => setCommentPosition(value)}>
+                    <Select
+                      value={commentPosition}
+                      onValueChange={(value: any) => setCommentPosition(value)}
+                    >
                       <SelectTrigger className="w-40" {...({} as any)}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="neutral">{t('neutral')}</SelectItem>
-                        <SelectItem value="yes">{t('truthYes')}</SelectItem>
-                        <SelectItem value="no">{t('truthNo')}</SelectItem>
+                        <SelectItem value="neutral">{t("neutral")}</SelectItem>
+                        <SelectItem value="yes">{t("truthYes")}</SelectItem>
+                        <SelectItem value="no">{t("truthNo")}</SelectItem>
                       </SelectContent>
                     </Select>
                     <Button onClick={handleCommentSubmit} className="gap-2">
                       <Send className="h-4 w-4" />
-                      {t('postComment')}
+                      {t("postComment")}
                     </Button>
                   </div>
                 </div>
@@ -461,47 +606,70 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
                 {/* Comments List */}
                 <div className="space-y-4">
                   {comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-3 p-4 bg-card/50 rounded-lg">
+                    <div
+                      key={comment.id}
+                      className="flex gap-3 p-4 bg-card/50 rounded-lg"
+                    >
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={comment.avatar} />
-                        <AvatarFallback>{comment.username.slice(0, 2).toUpperCase()}</AvatarFallback>
+                        <AvatarFallback>
+                          {comment.username.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
                       </Avatar>
-                      
+
                       <div className="flex-1 space-y-2">
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold">{comment.username}</span>
+                          <span className="font-semibold">
+                            {comment.username}
+                          </span>
                           {comment.isVerified && (
                             <CheckCircle2 className="h-4 w-4 text-primary" />
                           )}
                           {comment.position && (
-                            <Badge 
-                              variant={comment.position === 'yes' ? 'default' : 'secondary'}
+                            <Badge
+                              variant={
+                                comment.position === "yes"
+                                  ? "default"
+                                  : "secondary"
+                              }
                               className="text-xs"
                             >
-                              {comment.position === 'yes' ? t('truthYes') : t('truthNo')}
+                              {comment.position === "yes"
+                                ? t("truthYes")
+                                : t("truthNo")}
                             </Badge>
                           )}
                           <span className="text-xs text-muted-foreground">
                             {formatTimeAgo(comment.timestamp)}
                           </span>
                         </div>
-                        
+
                         <p className="text-sm">{comment.comment}</p>
-                        
+
                         <div className="flex items-center gap-4">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleLikeComment(comment.id)}
-                            className={`gap-1 h-8 ${likedComments.has(comment.id) ? 'text-primary' : 'text-muted-foreground'}`}
+                            className={`gap-1 h-8 ${
+                              likedComments.has(comment.id)
+                                ? "text-primary"
+                                : "text-muted-foreground"
+                            }`}
                             {...({} as any)}
                           >
                             <ThumbsUp className="h-3 w-3" />
-                            {comment.likes + (likedComments.has(comment.id) ? 1 : 0)}
+                            {comment.likes +
+                              (likedComments.has(comment.id) ? 1 : 0)}
                           </Button>
-                          <Button variant="ghost" size="sm" className="gap-1 h-8 text-muted-foreground" {...({} as any)}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="gap-1 h-8 text-muted-foreground"
+                            {...({} as any)}
+                          >
                             <MessageCircle className="h-3 w-3" />
-                            {t('reply')}
+                            {t("reply")}
                           </Button>
                         </div>
                       </div>
@@ -513,28 +681,36 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
           )}
 
           {/* Rules Tab */}
-          {activeTab === 'rules' && (
+          {activeTab === "rules" && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Scale className="h-5 w-5" />
-                  {t('marketRules')} & {t('conditions')}
+                  {t("marketRules")} & {t("conditions")}
                 </CardTitle>
-                <CardDescription>
-                  {t('marketRulesDescription')}
-                </CardDescription>
+                <CardDescription>{t("marketRulesDescription")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {rules.map((rule) => {
                   const Icon = getRuleIcon(rule.category);
                   return (
-                    <div key={rule.id} className="p-4 border border-border rounded-lg">
+                    <div
+                      key={rule.id}
+                      className="p-4 border border-border rounded-lg"
+                    >
                       <div className="flex items-start gap-3">
-                        <Icon className={`h-5 w-5 mt-0.5 ${getRuleColor(rule.category)}`} />
+                        <Icon
+                          className={`h-5 w-5 mt-0.5 ${getRuleColor(
+                            rule.category
+                          )}`}
+                        />
                         <div className="flex-1 space-y-2">
                           <div className="flex items-center gap-2">
                             <h4 className="font-semibold">{rule.title}</h4>
-                            <Badge variant="outline" className="text-xs capitalize">
+                            <Badge
+                              variant="outline"
+                              className="text-xs capitalize"
+                            >
                               {rule.category}
                             </Badge>
                           </div>
@@ -550,33 +726,96 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
             </Card>
           )}
 
+          {/* Verify Truth Tab*/}
+          {activeTab === "verify" && (
+            <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="h-5 w-5" />
+                  Submit a Claim for Verification
+                </CardTitle>
+                <CardDescription className="text-primary text-lg">{market.claim}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="claim">Claim to Verify</Label>
+                    <Textarea
+                      id="claim"
+                      placeholder="Provide Evidence to verify for truth..."
+                      value={claim}
+                      onChange={(e) => setClaim(e.target.value)}
+                      rows={4}
+                      className="resize-none"
+                    />
+                  </div>
+                  <Select value={isTrue} onValueChange={handleVerifyClaim}>
+                    <SelectTrigger
+                      className="w-40 md:w-32 flex-1 h-11 bg-background/50 border-primary/30 text-sm"
+                      {...({} as any)}
+                    >
+                      <SelectValue placeholder="Yes/No" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="True">True</SelectItem>
+                      <SelectItem value="False">False</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    onClick={async () => {
+                      setIsVerifying(true);
+                      try {
+                        // Placeholder verification logic
+                        await new Promise((res) => setTimeout(res, 1000));
+                        toast.success("Verification submitted");
+                        setClaim("");
+                      } catch (e) {
+                        console.error(e);
+                        toast.error("Verification failed");
+                      } finally {
+                        setIsVerifying(false);
+                      }
+                    }}
+                    disabled={isVerifying || !claim.trim() || isTrue === ''}
+                    className="w-full"
+                  >
+                    {isVerifying ? "Verifying..." : "Verify Truth"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* AI Analysis Tab */}
-          {activeTab === 'analysis' && (
+          {activeTab === "analysis" && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Zap className="h-5 w-5" />
-                  {t('aiAnalysis')} & {t('insights')}
+                  {t("aiAnalysis")} & {t("insights")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
-                  <h4 className="font-semibold text-primary mb-2">{t('aiConfidenceScore')}</h4>
+                  <h4 className="font-semibold text-primary mb-2">
+                    {t("aiConfidenceScore")}
+                  </h4>
                   <div className="flex items-center gap-2">
                     <Progress value={72} className="flex-1" />
                     <span className="font-bold">72%</span>
                   </div>
                   <p className="text-sm text-muted-foreground mt-2">
-                    {t('aiConfidenceExplanation')}
+                    {t("aiConfidenceExplanation")}
                   </p>
                 </div>
 
                 <div className="space-y-3">
-                  <h4 className="font-semibold">{t('keyFactors')}</h4>
+                  <h4 className="font-semibold">{t("keyFactors")}</h4>
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
-                      Historical production trends show consistent 15% annual growth
+                      Historical production trends show consistent 15% annual
+                      growth
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
@@ -594,7 +833,7 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
                 </div>
 
                 <div>
-                  <h4 className="font-semibold mb-2">{t('dataSources')}</h4>
+                  <h4 className="font-semibold mb-2">{t("dataSources")}</h4>
                   <div className="text-sm text-muted-foreground space-y-1">
                     <p>• Nigerian Film Corporation official statistics</p>
                     <p>• Nollywood Producers Association reports</p>
@@ -613,16 +852,18 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5" />
-                {t('castYourPosition')}
+                {t("castYourPosition")}
               </CardTitle>
               <CardDescription>
-                {t('currentBalance')}: {userBalance.toFixed(3)} ETH
+                {t("currentBalance")}: {userBalance.toFixed(3)} ETH
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Quick Cast Buttons */}
               <div className="space-y-3">
-                <Label className="text-sm font-medium">{t('quickCastTruth')}</Label>
+                <Label className="text-sm font-medium">
+                  {t("quickCastTruth")}
+                </Label>
                 <div className="grid grid-cols-2 gap-2">
                   {quickCastAmounts.slice(0, 4).map((amount) => (
                     <Button
@@ -633,7 +874,7 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        handleQuickCast('yes', amount);
+                        handleQuickCast("yes", amount);
                       }}
                       disabled={amount > userBalance}
                       {...({} as any)}
@@ -646,7 +887,9 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
               </div>
 
               <div className="space-y-3">
-                <Label className="text-sm font-medium">{t('quickCastFalse')}</Label>
+                <Label className="text-sm font-medium">
+                  {t("quickCastFalse")}
+                </Label>
                 <div className="grid grid-cols-2 gap-2">
                   {quickCastAmounts.slice(0, 4).map((amount) => (
                     <Button
@@ -657,12 +900,14 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        handleQuickCast('no', amount);
+                        handleQuickCast("no", amount);
                       }}
                       disabled={amount > userBalance}
                       {...({} as any)}
                     >
-                      <span className="text-secondary font-semibold">FALSE</span>
+                      <span className="text-secondary font-semibold">
+                        FALSE
+                      </span>
                       <span className="ml-2">{amount} ETH</span>
                     </Button>
                   ))}
@@ -673,16 +918,23 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
 
               {/* Custom Cast */}
               <div className="space-y-3">
-                <Label className="text-sm font-medium">{t('customAmount')}</Label>
+                <Label className="text-sm font-medium">
+                  {t("customAmount")}
+                </Label>
                 <div className="space-y-3">
                   <div className="flex gap-2">
-                    <Select value={castPosition} onValueChange={(value: any) => handlePositionChange(value)}>
+                    <Select
+                      value={castPosition}
+                      onValueChange={(value: any) =>
+                        handlePositionChange(value)
+                      }
+                    >
                       <SelectTrigger className="w-24" {...({} as any)}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="yes">{t('truth')}</SelectItem>
-                        <SelectItem value="no">{t('false')}</SelectItem>
+                        <SelectItem value="yes">{t("truth")}</SelectItem>
+                        <SelectItem value="no">{t("false")}</SelectItem>
                       </SelectContent>
                     </Select>
                     <Input
@@ -695,52 +947,82 @@ export default function MarketPage({ market, onPlaceBet, userBalance, onBack }: 
                       className="flex-1"
                     />
                   </div>
-                  
+
                   {/* Real-time Profit Calculator */}
                   {profitCalculation && (
                     <div className="p-3 bg-muted/30 rounded-lg border border-border">
-                      <h4 className="text-sm font-medium mb-2 text-primary">Profit Calculator</h4>
+                      <h4 className="text-sm font-medium mb-2 text-primary">
+                        Profit Calculator
+                      </h4>
                       <div className="space-y-1 text-xs">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Your Stake:</span>
-                          <span className="font-medium">{profitCalculation.amount.toFixed(3)} ETH</span>
+                          <span className="text-muted-foreground">
+                            Your Stake:
+                          </span>
+                          <span className="font-medium">
+                            {profitCalculation.amount.toFixed(3)} ETH
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Odds:</span>
-                          <span className="font-medium">{(castPosition === 'yes' ? market.yesOdds : market.noOdds).toFixed(2)}x</span>
+                          <span className="font-medium">
+                            {(castPosition === "yes"
+                              ? market.yesOdds
+                              : market.noOdds
+                            ).toFixed(2)}
+                            x
+                          </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Potential Return:</span>
-                          <span className="font-medium text-green-400">{profitCalculation.potential.toFixed(3)} ETH</span>
+                          <span className="text-muted-foreground">
+                            Potential Return:
+                          </span>
+                          <span className="font-medium text-green-400">
+                            {profitCalculation.potential.toFixed(3)} ETH
+                          </span>
                         </div>
                         <div className="flex justify-between border-t border-border pt-1 mt-2">
-                          <span className="text-muted-foreground">Profit if Correct:</span>
-                          <span className="font-bold text-green-400">+{profitCalculation.profit.toFixed(3)} ETH</span>
+                          <span className="text-muted-foreground">
+                            Profit if Correct:
+                          </span>
+                          <span className="font-bold text-green-400">
+                            +{profitCalculation.profit.toFixed(3)} ETH
+                          </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Loss if Wrong:</span>
-                          <span className="font-bold text-red-400">-{profitCalculation.amount.toFixed(3)} ETH</span>
+                          <span className="text-muted-foreground">
+                            Loss if Wrong:
+                          </span>
+                          <span className="font-bold text-red-400">
+                            -{profitCalculation.amount.toFixed(3)} ETH
+                          </span>
                         </div>
                       </div>
                     </div>
                   )}
                 </div>
-                <Button 
-                  onClick={handleCustomCast} 
+                <Button
+                  onClick={handleCustomCast}
                   className="w-full gap-2"
                   disabled={!castAmount || parseFloat(castAmount) > userBalance}
                 >
                   <Target className="h-4 w-4" />
-                  {t('castPosition')}
+                  {t("castPosition")}
                 </Button>
               </div>
 
               {/* Potential Return */}
               {castAmount && !isNaN(parseFloat(castAmount)) && (
                 <div className="p-3 bg-muted/50 rounded-lg">
-                  <div className="text-sm text-muted-foreground mb-1">{t('potential_return')}</div>
+                  <div className="text-sm text-muted-foreground mb-1">
+                    {t("potential_return")}
+                  </div>
                   <div className="font-semibold text-green-400">
-                    {(parseFloat(castAmount) * (castPosition === 'yes' ? market.yesOdds : market.noOdds)).toFixed(3)} ETH
+                    {(
+                      parseFloat(castAmount) *
+                      (castPosition === "yes" ? market.yesOdds : market.noOdds)
+                    ).toFixed(3)}{" "}
+                    ETH
                   </div>
                 </div>
               )}

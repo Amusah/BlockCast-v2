@@ -8,7 +8,7 @@ import { Switch } from './ui/switch';
 import { Separator } from './ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette, Database, Smartphone, Languages, Moon, Sun, Volume2, VolumeX, Wallet, History } from 'lucide-react';
+import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette, Database, Smartphone, Languages, Moon, Sun, Volume2, VolumeX, Wallet, History, BriefcaseBusiness } from 'lucide-react';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { useLanguage } from './LanguageContext';
 import { toast } from 'sonner';
@@ -112,7 +112,7 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
           justify-content: start;
         }
       `}</style>
-      
+
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
@@ -134,7 +134,7 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
             Profile
           </TabsTrigger>
           <TabsTrigger value="portfolio" className="gap-2">
-            <Wallet className="h-4 w-4" />
+            <BriefcaseBusiness className="h-4 w-4 mr-2" />
             Portfolio
           </TabsTrigger>
           <TabsTrigger value="history" className="gap-2">
@@ -164,8 +164,8 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
         </TabsContent>
 
         <TabsContent value="history" className="space-y-6">
-          <VerificationHistory 
-            verificationHistory={verificationHistory} 
+          <VerificationHistory
+            verificationHistory={verificationHistory}
             onSelectVerification={onSelectVerification}
           />
         </TabsContent>
@@ -206,7 +206,11 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" defaultValue="john.doe@example.com" />
+                  <Input
+                    id="email"
+                    type="email"
+                    defaultValue="john.doe@example.com"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="country">Country</Label>
@@ -217,10 +221,14 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                     <SelectContent>
                       <SelectItem value="nigeria">🇳🇬 Nigeria</SelectItem>
                       <SelectItem value="kenya">🇰🇪 Kenya</SelectItem>
-                      <SelectItem value="south-africa">🇿🇦 South Africa</SelectItem>
+                      <SelectItem value="south-africa">
+                        🇿🇦 South Africa
+                      </SelectItem>
                       <SelectItem value="ghana">🇬🇭 Ghana</SelectItem>
                       <SelectItem value="senegal">🇸🇳 Senegal</SelectItem>
-                      <SelectItem value="cote-divoire">🇨🇮 Côte d'Ivoire</SelectItem>
+                      <SelectItem value="cote-divoire">
+                        🇨🇮 Côte d'Ivoire
+                      </SelectItem>
                       <SelectItem value="morocco">🇲🇦 Morocco</SelectItem>
                       <SelectItem value="egypt">🇪🇬 Egypt</SelectItem>
                     </SelectContent>
@@ -233,11 +241,21 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="africa/lagos">Africa/Lagos (WAT)</SelectItem>
-                      <SelectItem value="africa/nairobi">Africa/Nairobi (EAT)</SelectItem>
-                      <SelectItem value="africa/johannesburg">Africa/Johannesburg (SAST)</SelectItem>
-                      <SelectItem value="africa/cairo">Africa/Cairo (EET)</SelectItem>
-                      <SelectItem value="africa/casablanca">Africa/Casablanca (WET)</SelectItem>
+                      <SelectItem value="africa/lagos">
+                        Africa/Lagos (WAT)
+                      </SelectItem>
+                      <SelectItem value="africa/nairobi">
+                        Africa/Nairobi (EAT)
+                      </SelectItem>
+                      <SelectItem value="africa/johannesburg">
+                        Africa/Johannesburg (SAST)
+                      </SelectItem>
+                      <SelectItem value="africa/cairo">
+                        Africa/Cairo (EET)
+                      </SelectItem>
+                      <SelectItem value="africa/casablanca">
+                        Africa/Casablanca (WET)
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -258,8 +276,12 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               <div className="p-4 bg-muted/20 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-semibold text-foreground">Verification Status</h4>
-                    <p className="text-sm text-muted-foreground">Complete verification to increase trust</p>
+                    <h4 className="font-semibold text-foreground">
+                      Verification Status
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Complete verification to increase trust
+                    </p>
                   </div>
                   <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">
                     Partial
@@ -268,7 +290,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="mt-4 space-y-2">
                   <div className="flex items-center justify-between text-sm">
                     <span>Email verified</span>
-                    <Badge className="bg-green-500/20 text-green-500 border-green-500/30">✓</Badge>
+                    <Badge className="bg-green-500/20 text-green-500 border-green-500/30">
+                      ✓
+                    </Badge>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span>Phone verified</span>
@@ -279,7 +303,11 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                     <Badge variant="outline">Not started</Badge>
                   </div>
                 </div>
-                <Button className="w-full mt-4" variant="outline" asChild={false}>
+                <Button
+                  className="w-full mt-4"
+                  variant="outline"
+                  asChild={false}
+                >
                   Complete Verification
                 </Button>
               </div>
@@ -302,18 +330,26 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               <div className="grid grid-cols-3 gap-5">
                 <Accordion type="single" collapsible className="col-span-3">
                   <div className="accordion-container">
-                    <AccordionItem value="language-region" className="accordion-item-custom border rounded-lg hover:bg-accent transition-colors [&[data-state=open]]:border-primary [&[data-state=open]]:bg-accent group">
+                    <AccordionItem
+                      value="language-region"
+                      className="accordion-item-custom border rounded-lg hover:bg-accent transition-colors [&[data-state=open]]:border-primary [&[data-state=open]]:bg-accent group"
+                    >
                       <AccordionTrigger className="p-4 hover:no-underline">
                         <div className="flex items-center gap-2">
                           <Languages className="h-5 w-5 text-primary" />
-                          <h4 className="font-semibold text-foreground">Language & Region</h4>
+                          <h4 className="font-semibold text-foreground">
+                            Language & Region
+                          </h4>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="px-4 pb-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 border-t pt-4">
                           <div className="space-y-2">
                             <Label>Interface Language</Label>
-                            <Select value={language} onValueChange={handleLanguageChange}>
+                            <Select
+                              value={language}
+                              onValueChange={handleLanguageChange}
+                            >
                               <SelectTrigger>
                                 <SelectValue />
                               </SelectTrigger>
@@ -327,7 +363,7 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                               </SelectContent>
                             </Select>
                           </div>
-                          
+
                           <div className="space-y-2">
                             <Label>Currency Display</Label>
                             <Select defaultValue="usd">
@@ -336,23 +372,38 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="usd">USD ($)</SelectItem>
-                                <SelectItem value="ngn">Nigerian Naira (₦)</SelectItem>
-                                <SelectItem value="kes">Kenyan Shilling (KSh)</SelectItem>
-                                <SelectItem value="zar">South African Rand (R)</SelectItem>
-                                <SelectItem value="ghs">Ghanaian Cedi (₵)</SelectItem>
-                                <SelectItem value="xof">CFA Franc (CFA)</SelectItem>
+                                <SelectItem value="ngn">
+                                  Nigerian Naira (₦)
+                                </SelectItem>
+                                <SelectItem value="kes">
+                                  Kenyan Shilling (KSh)
+                                </SelectItem>
+                                <SelectItem value="zar">
+                                  South African Rand (R)
+                                </SelectItem>
+                                <SelectItem value="ghs">
+                                  Ghanaian Cedi (₵)
+                                </SelectItem>
+                                <SelectItem value="xof">
+                                  CFA Franc (CFA)
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
                         </div>
                       </AccordionContent>
                     </AccordionItem>
-                    
-                    <AccordionItem value="appearance" className="accordion-item-custom border rounded-lg hover:bg-accent transition-colors [&[data-state=open]]:border-primary [&[data-state=open]]:bg-accent group">
+
+                    <AccordionItem
+                      value="appearance"
+                      className="accordion-item-custom border rounded-lg hover:bg-accent transition-colors [&[data-state=open]]:border-primary [&[data-state=open]]:bg-accent group"
+                    >
                       <AccordionTrigger className="p-4 hover:no-underline">
                         <div className="flex items-center gap-2">
                           <Palette className="h-5 w-5 text-primary" />
-                          <h4 className="font-semibold text-foreground">Appearance</h4>
+                          <h4 className="font-semibold text-foreground">
+                            Appearance
+                          </h4>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="px-4 pb-4">
@@ -360,7 +411,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                           <div className="flex items-center justify-between">
                             <div>
                               <Label>Dark Mode</Label>
-                              <p className="text-sm text-muted-foreground">Use dark theme for better night viewing</p>
+                              <p className="text-sm text-muted-foreground">
+                                Use dark theme for better night viewing
+                              </p>
                             </div>
                             <Button
                               variant="ghost"
@@ -369,15 +422,21 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                               onClick={onToggleDarkMode}
                               className="gap-2"
                             >
-                              {isDarkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                              {isDarkMode ? 'Dark' : 'Light'}
+                              {isDarkMode ? (
+                                <Moon className="h-4 w-4" />
+                              ) : (
+                                <Sun className="h-4 w-4" />
+                              )}
+                              {isDarkMode ? "Dark" : "Light"}
                             </Button>
                           </div>
 
                           <div className="flex items-center justify-between">
                             <div>
                               <Label>Compact Mode</Label>
-                              <p className="text-sm text-muted-foreground">Show more content in less space</p>
+                              <p className="text-sm text-muted-foreground">
+                                Show more content in less space
+                              </p>
                             </div>
                             <Switch />
                           </div>
@@ -385,22 +444,34 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                           <div className="flex items-center justify-between">
                             <div>
                               <Label>Sound Effects</Label>
-                              <p className="text-sm text-muted-foreground">Play sounds for interactions</p>
+                              <p className="text-sm text-muted-foreground">
+                                Play sounds for interactions
+                              </p>
                             </div>
-                            <Switch 
+                            <Switch
                               checked={notifications.soundEnabled}
-                              onCheckedChange={(checked: boolean) => handleNotificationChange('soundEnabled', checked)}
+                              onCheckedChange={(checked: boolean) =>
+                                handleNotificationChange(
+                                  "soundEnabled",
+                                  checked
+                                )
+                              }
                             />
                           </div>
                         </div>
                       </AccordionContent>
                     </AccordionItem>
-                    
-                    <AccordionItem value="mobile" className="accordion-item-custom border rounded-lg hover:bg-accent transition-colors [&[data-state=open]]:border-primary [&[data-state=open]]:bg-accent group">
+
+                    <AccordionItem
+                      value="mobile"
+                      className="accordion-item-custom border rounded-lg hover:bg-accent transition-colors [&[data-state=open]]:border-primary [&[data-state=open]]:bg-accent group"
+                    >
                       <AccordionTrigger className="p-4 hover:no-underline">
                         <div className="flex items-center gap-2">
                           <Smartphone className="h-5 w-5 text-primary" />
-                          <h4 className="font-semibold text-foreground">Mobile Experience</h4>
+                          <h4 className="font-semibold text-foreground">
+                            Mobile Experience
+                          </h4>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="px-4 pb-4">
@@ -408,7 +479,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                           <div className="flex items-center justify-between">
                             <div>
                               <Label>Auto-rotate</Label>
-                              <p className="text-sm text-muted-foreground">Automatically rotate content on mobile</p>
+                              <p className="text-sm text-muted-foreground">
+                                Automatically rotate content on mobile
+                              </p>
                             </div>
                             <Switch defaultChecked />
                           </div>
@@ -416,33 +489,41 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                           <div className="flex items-center justify-between">
                             <div>
                               <Label>Haptic Feedback</Label>
-                              <p className="text-sm text-muted-foreground">Vibrate on interactions (mobile only)</p>
+                              <p className="text-sm text-muted-foreground">
+                                Vibrate on interactions (mobile only)
+                              </p>
                             </div>
                             <Switch defaultChecked />
                           </div>
                         </div>
                       </AccordionContent>
                     </AccordionItem>
-                    
+
                     {/* Second row items */}
                     <div className="accordion-item-custom border rounded-lg p-4 hover:bg-accent transition-colors cursor-pointer group">
                       <div className="flex items-center gap-2">
                         <Bell className="h-5 w-5 text-primary" />
-                        <h4 className="font-semibold text-foreground">Notifications</h4>
+                        <h4 className="font-semibold text-foreground">
+                          Notifications
+                        </h4>
                       </div>
                     </div>
-                    
+
                     <div className="accordion-item-custom border rounded-lg p-4 hover:bg-accent transition-colors cursor-pointer group">
                       <div className="flex items-center gap-2">
                         <Shield className="h-5 w-5 text-primary" />
-                        <h4 className="font-semibold text-foreground">Security</h4>
+                        <h4 className="font-semibold text-foreground">
+                          Security
+                        </h4>
                       </div>
                     </div>
-                    
+
                     <div className="accordion-item-custom border rounded-lg p-4 hover:bg-accent transition-colors cursor-pointer group">
                       <div className="flex items-center gap-2">
                         <Database className="h-5 w-5 text-primary" />
-                        <h4 className="font-semibold text-foreground">Data Management</h4>
+                        <h4 className="font-semibold text-foreground">
+                          Data Management
+                        </h4>
                       </div>
                     </div>
                   </div>
@@ -455,13 +536,17 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Smartphone className="h-5 w-5 text-primary" />
-                  <h4 className="font-semibold text-foreground">Mobile Experience</h4>
+                  <h4 className="font-semibold text-foreground">
+                    Mobile Experience
+                  </h4>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Auto-rotate</Label>
-                    <p className="text-sm text-muted-foreground">Automatically rotate content on mobile</p>
+                    <p className="text-sm text-muted-foreground">
+                      Automatically rotate content on mobile
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -469,7 +554,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Haptic Feedback</Label>
-                    <p className="text-sm text-muted-foreground">Vibrate on interactions (mobile only)</p>
+                    <p className="text-sm text-muted-foreground">
+                      Vibrate on interactions (mobile only)
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -490,22 +577,28 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               {/* Truth Markets */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Truth Markets</h4>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Market Resolutions</Label>
-                    <p className="text-sm text-muted-foreground">When markets you participated in are resolved</p>
+                    <p className="text-sm text-muted-foreground">
+                      When markets you participated in are resolved
+                    </p>
                   </div>
-                  <Switch 
+                  <Switch
                     checked={notifications.truthMarkets}
-                    onCheckedChange={(checked: boolean) => handleNotificationChange('truthMarkets', checked)}
+                    onCheckedChange={(checked: boolean) =>
+                      handleNotificationChange("truthMarkets", checked)
+                    }
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>New African Markets</Label>
-                    <p className="text-sm text-muted-foreground">When new truth markets are created in your region</p>
+                    <p className="text-sm text-muted-foreground">
+                      When new truth markets are created in your region
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -513,7 +606,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Price Alerts</Label>
-                    <p className="text-sm text-muted-foreground">When odds change significantly on your positions</p>
+                    <p className="text-sm text-muted-foreground">
+                      When odds change significantly on your positions
+                    </p>
                   </div>
                   <Switch />
                 </div>
@@ -524,22 +619,28 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               {/* Community */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Community</h4>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Community Updates</Label>
-                    <p className="text-sm text-muted-foreground">Posts and discussions from your communities</p>
+                    <p className="text-sm text-muted-foreground">
+                      Posts and discussions from your communities
+                    </p>
                   </div>
-                  <Switch 
+                  <Switch
                     checked={notifications.communityUpdates}
-                    onCheckedChange={(checked: boolean) => handleNotificationChange('communityUpdates', checked)}
+                    onCheckedChange={(checked: boolean) =>
+                      handleNotificationChange("communityUpdates", checked)
+                    }
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Mentions</Label>
-                    <p className="text-sm text-muted-foreground">When someone mentions you in discussions</p>
+                    <p className="text-sm text-muted-foreground">
+                      When someone mentions you in discussions
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -547,7 +648,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Followers</Label>
-                    <p className="text-sm text-muted-foreground">When someone follows your truth verification activity</p>
+                    <p className="text-sm text-muted-foreground">
+                      When someone follows your truth verification activity
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -558,22 +661,28 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               {/* Governance */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Governance</h4>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>New Proposals</Label>
-                    <p className="text-sm text-muted-foreground">When new governance proposals are submitted</p>
+                    <p className="text-sm text-muted-foreground">
+                      When new governance proposals are submitted
+                    </p>
                   </div>
-                  <Switch 
+                  <Switch
                     checked={notifications.governance}
-                    onCheckedChange={(checked: boolean) => handleNotificationChange('governance', checked)}
+                    onCheckedChange={(checked: boolean) =>
+                      handleNotificationChange("governance", checked)
+                    }
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Voting Reminders</Label>
-                    <p className="text-sm text-muted-foreground">Reminders before voting deadlines</p>
+                    <p className="text-sm text-muted-foreground">
+                      Reminders before voting deadlines
+                    </p>
                   </div>
                   <Switch />
                 </div>
@@ -581,7 +690,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Results</Label>
-                    <p className="text-sm text-muted-foreground">When proposals you voted on are resolved</p>
+                    <p className="text-sm text-muted-foreground">
+                      When proposals you voted on are resolved
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -591,12 +702,16 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
 
               {/* Delivery Methods */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-foreground">Delivery Methods</h4>
-                
+                <h4 className="font-semibold text-foreground">
+                  Delivery Methods
+                </h4>
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Email Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Receive notifications via email</p>
+                    <p className="text-sm text-muted-foreground">
+                      Receive notifications via email
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -604,7 +719,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Push Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Browser and mobile push notifications</p>
+                    <p className="text-sm text-muted-foreground">
+                      Browser and mobile push notifications
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -612,7 +729,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>SMS Alerts</Label>
-                    <p className="text-sm text-muted-foreground">Important alerts via SMS (fees may apply)</p>
+                    <p className="text-sm text-muted-foreground">
+                      Important alerts via SMS (fees may apply)
+                    </p>
                   </div>
                   <Switch />
                 </div>
@@ -632,38 +751,52 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
             <CardContent className="space-y-6">
               {/* Profile Visibility */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-foreground">Profile Visibility</h4>
-                
+                <h4 className="font-semibold text-foreground">
+                  Profile Visibility
+                </h4>
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Public Profile</Label>
-                    <p className="text-sm text-muted-foreground">Allow others to view your profile and stats</p>
+                    <p className="text-sm text-muted-foreground">
+                      Allow others to view your profile and stats
+                    </p>
                   </div>
-                  <Switch 
+                  <Switch
                     checked={privacy.profileVisible}
-                    onCheckedChange={(checked: boolean) => handlePrivacyChange('profileVisible', checked)}
+                    onCheckedChange={(checked: boolean) =>
+                      handlePrivacyChange("profileVisible", checked)
+                    }
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Verification History</Label>
-                    <p className="text-sm text-muted-foreground">Show your truth verification history publicly</p>
+                    <p className="text-sm text-muted-foreground">
+                      Show your truth verification history publicly
+                    </p>
                   </div>
-                  <Switch 
+                  <Switch
                     checked={privacy.historyVisible}
-                    onCheckedChange={(checked: boolean) => handlePrivacyChange('historyVisible', checked)}
+                    onCheckedChange={(checked: boolean) =>
+                      handlePrivacyChange("historyVisible", checked)
+                    }
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Activity Status</Label>
-                    <p className="text-sm text-muted-foreground">Show when you're online or active</p>
+                    <p className="text-sm text-muted-foreground">
+                      Show when you're online or active
+                    </p>
                   </div>
-                  <Switch 
+                  <Switch
                     checked={privacy.activityVisible}
-                    onCheckedChange={(checked: boolean) => handlePrivacyChange('activityVisible', checked)}
+                    onCheckedChange={(checked: boolean) =>
+                      handlePrivacyChange("activityVisible", checked)
+                    }
                   />
                 </div>
               </div>
@@ -673,18 +806,30 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               {/* Security Settings */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Security</h4>
-                
-                <Button variant="outline" className="w-full justify-start" asChild={false}>
+
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  asChild={false}
+                >
                   <Shield className="h-4 w-4 mr-2" />
                   Change Password
                 </Button>
 
-                <Button variant="outline" className="w-full justify-start" asChild={false}>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  asChild={false}
+                >
                   <Smartphone className="h-4 w-4 mr-2" />
                   Setup Two-Factor Authentication
                 </Button>
 
-                <Button variant="outline" className="w-full justify-start" asChild={false}>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  asChild={false}
+                >
                   <Globe className="h-4 w-4 mr-2" />
                   Active Sessions
                 </Button>
@@ -695,11 +840,13 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               {/* Data Control */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Data Control</h4>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Analytics Tracking</Label>
-                    <p className="text-sm text-muted-foreground">Help improve the platform with usage data</p>
+                    <p className="text-sm text-muted-foreground">
+                      Help improve the platform with usage data
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -707,7 +854,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Personalized Content</Label>
-                    <p className="text-sm text-muted-foreground">Show content based on your activity</p>
+                    <p className="text-sm text-muted-foreground">
+                      Show content based on your activity
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -715,11 +864,15 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Marketing Communications</Label>
-                    <p className="text-sm text-muted-foreground">Receive updates about new features</p>
+                    <p className="text-sm text-muted-foreground">
+                      Receive updates about new features
+                    </p>
                   </div>
-                  <Switch 
+                  <Switch
                     checked={notifications.marketing}
-                    onCheckedChange={(checked: boolean) => handleNotificationChange('marketing', checked)}
+                    onCheckedChange={(checked: boolean) =>
+                      handleNotificationChange("marketing", checked)
+                    }
                   />
                 </div>
               </div>
@@ -740,10 +893,16 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Data Export</h4>
                 <p className="text-sm text-muted-foreground">
-                  Download a copy of your Blockcast data including verification history, posts, and settings.
+                  Download a copy of your Blockcast data including verification
+                  history, posts, and settings.
                 </p>
-                
-                <Button onClick={handleExportData} className="w-full" variant="outline" asChild={false}>
+
+                <Button
+                  onClick={handleExportData}
+                  className="w-full"
+                  variant="outline"
+                  asChild={false}
+                >
                   <Database className="h-4 w-4 mr-2" />
                   Export My Data
                 </Button>
@@ -754,7 +913,7 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
               {/* Storage Usage */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-foreground">Storage Usage</h4>
-                
+
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Verification History</span>
@@ -772,9 +931,9 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                     <span className="text-sm">Cache & Temporary</span>
                     <span className="text-sm font-medium">432 KB</span>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex justify-between items-center font-semibold">
                     <span>Total Usage</span>
                     <span>4.9 MB</span>
@@ -794,14 +953,17 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
                 <p className="text-sm text-muted-foreground">
                   These actions are permanent and cannot be undone.
                 </p>
-                
+
                 <div className="p-4 border border-destructive/20 rounded-lg bg-destructive/5">
-                  <h5 className="font-semibold text-destructive mb-2">Delete Account</h5>
+                  <h5 className="font-semibold text-destructive mb-2">
+                    Delete Account
+                  </h5>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Permanently delete your account and all associated data. This action cannot be reversed.
+                    Permanently delete your account and all associated data.
+                    This action cannot be reversed.
                   </p>
-                  <Button 
-                    variant="destructive" 
+                  <Button
+                    variant="destructive"
                     onClick={handleDeleteAccount}
                     className="w-full"
                     asChild={false}
