@@ -25,7 +25,7 @@ import {
   BriefcaseBusiness,
   History,
   User,
-  } from "lucide-react";
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -88,8 +88,8 @@ export default function TopNavigation({
     { code: "sw", name: "Kiswahili", flag: "🇰🇪" },
   ];
 
-  const handleNavClick = (path: string = '', activeTab: string = '') => {
-    navigate(path, {state:{active: `${activeTab}`}});
+  const handleNavClick = (path: string = "", activeTab: string = "") => {
+    navigate(path, { state: { active: `${activeTab}` } });
     setShowMobileMenu(false);
     // console.log('Navigating to:', path, 'Active Tab:', activeTab);
   };
@@ -235,16 +235,22 @@ export default function TopNavigation({
                     </div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => handleNavClick("/settings", 'profile')}>
+                  <DropdownMenuItem
+                    onClick={() => handleNavClick("/settings", "profile")}
+                  >
                     <User className="h-4 w-4 mr-2" />
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleNavClick("/settings", 'portfolio')}>
+                  <DropdownMenuItem
+                    onClick={() => handleNavClick("/settings", "portfolio")}
+                  >
                     <BriefcaseBusiness className="h-4 w-4 mr-2" />
                     Portfolio
                   </DropdownMenuItem>
                   {/* <DropdownMenuSeparator /> */}
-                  <DropdownMenuItem onClick={() => handleNavClick("/settings", 'history')}>
+                  <DropdownMenuItem
+                    onClick={() => handleNavClick("/settings", "history")}
+                  >
                     <History className="h-4 w-4 mr-2" />
                     History
                   </DropdownMenuItem>
@@ -339,11 +345,29 @@ export default function TopNavigation({
                   {/* <FooterAccordion handleLinkClick={(page) => {
                     handleNavClick(`/${page}`);
                   }} /> */}
+
+                  {/* Settings dropdown menu */}
                   <NavAccordion
+                    handleLinkClick={(page) => {
+                      handleNavClick("/settings", page);
+                    }}
+                    data={[
+                      { label: "Profile", page: "profile" },
+                      { label: "Portfolio", page: "portfolio" },
+                      { label: "History", page: "history" },
+                    ]}
+                    accordionTitle={"Settings"}
+                  />
+
+                  {/* Support & Legal Links */}
+                  {/* <NavAccordion
                     handleLinkClick={(page) => {
                       handleNavClick(`/${page}`);
                     }}
-                  />
+                    accordionTitle={"Support & Legal"}
+                  /> */}
+
+                  <div></div>
 
                   {/* Language Selector Mobile */}
                   <div className="mt-6">
