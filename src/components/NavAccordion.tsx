@@ -33,7 +33,8 @@ const NavAccordion = ({ handleLinkClick, accordionTitle, data = accordionData })
       </div>
       <div
         className={`space-y-2 overflow-hidden transition-all duration-500 ease-in-out ${
-          toggleSupport ? "max-h-96 opacity-100" : "h-0 opacity-0"
+          toggleSupport ? "h-96 opacity-100" : "h-0 opacity-0"
+          // toggleSupport ? "max-h-96 opacity-100" : "h-0 opacity-0"
         }`}
       >
         {data.map((item) => (

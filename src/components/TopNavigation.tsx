@@ -112,7 +112,7 @@ export default function TopNavigation({
             <div className="flex items-center gap-3">
               <button
                 onClick={handleLogoClick}
-                className="flex items-center gap-3 hover:opacity-80 transition-opacity focus:outline-none"
+                className="flex items-center gap-3 hover:opacity-80 transition-opacity focus:outline-none cursor-pointer"
                 aria-label="Go to Truth Markets"
               >
                 <img
@@ -137,7 +137,7 @@ export default function TopNavigation({
                     key={item.id}
                     variant={active ? "default" : "ghost"}
                     onClick={() => handleNavClick(item.path)}
-                    className={`gap-2 px-4 py-2 h-10 ${
+                    className={`gap-2 px-4 py-2 h-10 cursor-pointer ${
                       active
                         ? "bg-primary text-primary-foreground shadow-sm"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -156,7 +156,11 @@ export default function TopNavigation({
             {/* Language Selector - Compact */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-1 px-2 py-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1 px-2 py-1 cursor-pointer"
+                >
                   <Languages className="h-4 w-4" />
                   <span className="hidden lg:inline text-xs">
                     {languageOptions.find((l) => l.code === language)?.flag}
@@ -186,7 +190,11 @@ export default function TopNavigation({
             </div>
 
             {/* Notifications - Compact */}
-            <Button variant="ghost" size="sm" className="relative p-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="relative p-2 cursor-pointer"
+            >
               <Bell className="h-4 w-4" />
               <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 bg-secondary text-secondary-foreground text-xs flex items-center justify-center">
                 3
@@ -198,7 +206,7 @@ export default function TopNavigation({
               variant="ghost"
               size="sm"
               onClick={onToggleDarkMode}
-              className="p-2"
+              className="p-2 cursor-pointer"
             >
               {isDarkMode ? (
                 <Sun className="h-4 w-4" />
@@ -211,7 +219,10 @@ export default function TopNavigation({
             <div className="hidden lg:block">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="gap-2 px-2 py-1">
+                  <Button
+                    variant="ghost"
+                    className="gap-2 px-2 py-1 cursor-pointer"
+                  >
                     <Avatar className="h-6 w-6">
                       <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                         JD
@@ -297,7 +308,7 @@ export default function TopNavigation({
                   </SheetHeader>
 
                   {/* User Profile Section */}
-                  <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-lg mb-6">
+                  <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-lg">
                     <Avatar>
                       <AvatarFallback className="bg-primary text-primary-foreground">
                         JD
@@ -321,7 +332,7 @@ export default function TopNavigation({
                   </div>
 
                   {/* Balance */}
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg mb-6">
+                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Wallet className="h-5 w-5 text-primary" />
                       <span className="font-medium">Balance</span>
@@ -330,15 +341,43 @@ export default function TopNavigation({
                       {userBalance.toFixed(3)} ETH
                     </span>
                   </div>
+
+                  <div onClick={() => handleNavClick("/settings", "profile")} className="flex items-center gap-2 p-2 ml-2 cursor-pointer">
+                    {/* <HandCoins className="size-6 text-primary" /> */}
+                    <Wallet className="size-4 text-primary" />
+                    <span className="text-md text-muted-foreground">
+                      Profile
+                    </span>
+                  </div>
+
+                  <div onClick={() => handleNavClick("/settings", "portfolio")} className="flex items-center gap-2 p-2 ml-2 cursor-pointer">
+                    {/* <HandCoins className="size-6 text-primary" /> */}
+                    <BriefcaseBusiness className="size-4 text-primary" />
+                    <span className="text-md text-muted-foreground">
+                      Portfolio
+                    </span>
+                  </div>
+
                   <div
                     onClick={() => {
                       setIsVisible(true);
                       handleNavClick();
                     }}
-                    className="flex items-center gap-2 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg mb-6 cursor-pointer"
+                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
                   >
-                    <HandCoins className="size-6 text-primary" />
-                    <span className="font-medium">Fund Wallet</span>
+                    {/* <HandCoins className="size-6 text-primary" /> */}
+                    <Wallet className="size-4 text-primary" />
+                    <span className="text-md text-muted-foreground">
+                      Fund Wallet
+                    </span>
+                  </div>
+
+                  <div onClick={() => handleNavClick("/settings", "history")} className="flex items-center gap-2 p-2 ml-2 cursor-pointer">
+                    {/* <HandCoins className="size-6 text-primary" /> */}
+                    <History className="size-4 text-primary" />
+                    <span className="text-md text-muted-foreground">
+                      History
+                    </span>
                   </div>
 
                   {/* Support & Legal Links */}
@@ -347,7 +386,7 @@ export default function TopNavigation({
                   }} /> */}
 
                   {/* Settings dropdown menu */}
-                  <NavAccordion
+                  {/* <NavAccordion
                     handleLinkClick={(page) => {
                       handleNavClick("/settings", page);
                     }}
@@ -357,46 +396,46 @@ export default function TopNavigation({
                       { label: "History", page: "history" },
                     ]}
                     accordionTitle={"Settings"}
-                  />
-
-                  {/* Support & Legal Links */}
-                  {/* <NavAccordion
-                    handleLinkClick={(page) => {
-                      handleNavClick(`/${page}`);
-                    }}
-                    accordionTitle={"Support & Legal"}
                   /> */}
 
-                  <div></div>
+                  <div className="fixed bottom-0 mb-6">
+                    {/* Support & Legal Links */}
+                    <NavAccordion
+                      handleLinkClick={(page) => {
+                        handleNavClick(`/${page}`);
+                      }}
+                      accordionTitle={"Support & Legal"}
+                    />
 
-                  {/* Language Selector Mobile */}
-                  <div className="mt-6">
-                    <Select
-                      value={language}
-                      onValueChange={(value) => setLanguage(value as any)}
+                    {/* Language Selector Mobile */}
+                    <div className="mt-3">
+                      <Select
+                        value={language}
+                        onValueChange={(value) => setLanguage(value as any)}
+                      >
+                        <SelectTrigger>
+                          <Languages className="h-4 w-4 mr-2" />
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {languageOptions.map((lang) => (
+                            <SelectItem key={lang.code} value={lang.code}>
+                              <span className="mr-2">{lang.flag}</span>
+                              {lang.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Sign Out */}
+                    <Button
+                      variant="outline"
+                      className="w-full mt-6 text-destructive border-destructive/30 hover:bg-destructive hover:text-destructive-foreground"
                     >
-                      <SelectTrigger>
-                        <Languages className="h-4 w-4 mr-2" />
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {languageOptions.map((lang) => (
-                          <SelectItem key={lang.code} value={lang.code}>
-                            <span className="mr-2">{lang.flag}</span>
-                            {lang.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      Sign Out
+                    </Button>
                   </div>
-
-                  {/* Sign Out */}
-                  <Button
-                    variant="outline"
-                    className="w-full mt-8 text-destructive border-destructive/30 hover:bg-destructive hover:text-destructive-foreground"
-                  >
-                    Sign Out
-                  </Button>
                 </SheetContent>
               </Sheet>
             </div>
