@@ -11,12 +11,12 @@ import {
   Target,
   ChevronDown,
 } from "lucide-react";
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import FooterAccordion from './FooterAccordion';
-import blockcastLogo from '@/assets/4714a7efb088ecf7991d3a7cb494d86ff45fc844.png';
-import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+// import FooterAccordion from './FooterAccordion';
+import blockcastLogo from "@/assets/4714a7efb088ecf7991d3a7cb494d86ff45fc844.png";
+import { useNavigate } from "react-router-dom";
+import hederaPrimary from "@/assets/hedera-primary.svg";
 
 interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -29,14 +29,14 @@ export default function Footer({ onNavigate }: FooterProps) {
   const handleLinkClick = (page: string) => {
     // Map page names to actual routes
     const routeMap: Record<string, string> = {
-      'markets': '/',
-      'verify': '/verify-truth',
-      'community': '/community-hub',
-      'about': '/about',
-      'contact': '/contact',
-      'privacy': '/privacy',
-      'terms': '/terms',
-      'help': '/help'
+      markets: "/",
+      verify: "/verify-truth",
+      community: "/community-hub",
+      about: "/about",
+      contact: "/contact",
+      privacy: "/privacy",
+      terms: "/terms",
+      help: "/help",
     };
 
     const route = routeMap[page];
@@ -48,7 +48,7 @@ export default function Footer({ onNavigate }: FooterProps) {
   };
 
   const handleLogoClick = () => {
-    navigate('/');
+    navigate("/");
   };
 
   // const handleToggleSupport = () => {
@@ -117,8 +117,8 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div className="space-y-2">
               {[
                 { label: "Truth Markets", icon: Globe, page: "markets" },
-                { label: "Fact Verification", icon: Shield, page: "verify" },
-                { label: "Community Truth", icon: Users, page: "community" },
+                // { label: "Fact Verification", icon: Shield, page: "verify" },
+                { label: "Community Hub", icon: Users, page: "community" },
               ].map((item) => (
                 <Button
                   {...({} as any)}
@@ -160,18 +160,25 @@ export default function Footer({ onNavigate }: FooterProps) {
           </div>
 
           {/* <FooterAccordion handleLinkClick={handleLinkClick} /> */}
-          
         </div>
 
         <Separator className="my-8" />
 
         {/* Bottom Footer */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-muted-foreground text-center w-full h-20 ">
+        <div className="flex flex-col lg:flex-row items-center gap-4 justify-between">
+          <div className="flex items-center text-sm text-muted-foreground  h-20 ">
             <p>
               &copy; {new Date().getFullYear()} Blockcast. Fighting
               misinformation through truth.
             </p>
+          </div>
+
+          <div className="flex items-center justify-start text-sm text-muted-foreground gap-2 h-20 ">
+            <p>Built on</p>
+            <span className="flex items-center">
+            <img className="h-6 text-muted-foreground" src={hederaPrimary} alt="" />
+            <p>Hedera</p>
+            </span>
           </div>
 
           {/* <div className="flex items-center gap-4 w-full hidden lg:flex">
