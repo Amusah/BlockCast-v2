@@ -165,19 +165,23 @@ export default function Footer({ onNavigate }: FooterProps) {
         <Separator className="my-8" />
 
         {/* Bottom Footer */}
-        <div className="flex flex-col lg:flex-row items-center gap-4 justify-between">
-          <div className="flex items-center text-sm text-muted-foreground  h-20 ">
+        <div className="flex flex-col items-center h-40 p-8 md:p-0 md:h-20">
+          <div className="flex items-center text-sm text-muted-foreground h-2 ">
             <p>
               &copy; {new Date().getFullYear()} Blockcast. Fighting
               misinformation through truth.
             </p>
           </div>
 
-          <div className="flex items-center justify-start text-sm text-muted-foreground gap-2 h-20 ">
+          <div className="flex items-center text-sm text-muted-foreground gap-2 h-20 md:pb-4">
             <p>Built on</p>
             <span className="flex items-center">
-            <img className="h-6 text-muted-foreground" src={hederaPrimary} alt="" />
-            <p>Hedera</p>
+              <img
+                className="h-6 text-muted-foreground"
+                src={hederaPrimary}
+                alt=""
+              />
+              <p>Hedera</p>
             </span>
           </div>
 

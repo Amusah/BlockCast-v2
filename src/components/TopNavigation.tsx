@@ -267,7 +267,7 @@ export default function TopNavigation({
                   </DropdownMenuItem>
                   {/* <DropdownMenuSeparator /> */}
                   <DropdownMenuItem onSelect={() => setIsVisible(true)}>
-                    <Wallet className="h-4 w-4 mr-2" />
+                    <HandCoins className="h-4 w-4 mr-2" />
                     Fund Wallet
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -366,7 +366,7 @@ export default function TopNavigation({
                     className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
                   >
                     {/* <HandCoins className="size-6 text-primary" /> */}
-                    <Wallet className="size-4 text-primary" />
+                    <HandCoins className="size-4 text-primary" />
                     <span className="text-md text-muted-foreground">
                       Fund Wallet
                     </span>
