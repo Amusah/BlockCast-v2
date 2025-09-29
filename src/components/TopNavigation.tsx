@@ -344,7 +344,7 @@ export default function TopNavigation({
 
                   <div onClick={() => handleNavClick("/settings", "profile")} className="flex items-center gap-2 p-2 ml-2 cursor-pointer">
                     {/* <HandCoins className="size-6 text-primary" /> */}
-                    <Wallet className="size-4 text-primary" />
+                      <User className="h-4 w-4 text-primary" />
                     <span className="text-md text-muted-foreground">
                       Profile
                     </span>

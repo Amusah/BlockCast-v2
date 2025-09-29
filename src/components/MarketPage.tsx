@@ -22,30 +22,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  TrendingUp,
-  TrendingDown,
-  Users,
-  Clock,
-  Target,
-  Star,
-  MessageCircle,
-  ArrowLeft,
-  Share2,
-  Heart,
-  Bookmark,
-  Zap,
-  Globe,
-  Shield,
-  ThumbsUp,
-  ThumbsDown,
-  Send,
-  Filter,
-  Eye,
-  AlertCircle,
-  CheckCircle2,
-  Clock3,
-  FileText,
-  Scale,
+    TrendingUp,
+    TrendingDown,
+    Users,
+    Clock,
+    Target,
+    Star,
+    MessageCircle,
+    ArrowLeft,
+    Share2,
+    Heart,
+    Bookmark,
+    Zap,
+    Globe,
+    Shield,
+    ThumbsUp,
+    ThumbsDown,
+    Send,
+    Filter,
+    Eye,
+    AlertCircle,
+    CheckCircle2,
+    Clock3,
+    FileText,
+    Scale, MessagesSquare,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "@/components/LanguageContext";
@@ -57,6 +57,8 @@ import {
   MarketComment,
   MarketRule,
 } from "@/utils/marketData";
+import dispute from '../assets/dispute.svg';
+
 
 interface MarketPageProps {
   market: BettingMarket;
@@ -462,6 +464,11 @@ export default function MarketPage({
       {/* Tab Navigation */}
       <div className="flex flex-wrap items-center gap-1 p-2 bg-muted/50 rounded-lg">
         {[
+          market.disputable && {
+            id: "verify",
+            label: t("Dispute"),
+            icon: MessagesSquare,
+          },
           { id: "overview", label: t("overview"), icon: Target },
           {
             id: "comments",
@@ -471,11 +478,6 @@ export default function MarketPage({
           },
           { id: "rules", label: t("rules"), icon: Scale },
           { id: "analysis", label: t("aiAnalysis"), icon: Zap },
-          market.disputable && {
-            id: "verify",
-            label: t("Verify Truth"),
-            icon: Shield,
-          },
         ]
           .filter(Boolean)
           .map((tab) => {
