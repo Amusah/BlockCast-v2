@@ -105,8 +105,8 @@ export default function MarketPage({
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<
-    "verify" | "overview" | "comments" | "rules" | "analysis"
-  >("verify");
+    "dispute" | "overview" | "comments" | "rules" | "analysis"
+  >(market.disputable ? "dispute" : "overview");
   const [claim, setClaim] = useState<string>("");
   const [isTrue, setIsTrue] = useState<string>("");
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
@@ -470,14 +470,14 @@ export default function MarketPage({
       <div className="flex flex-wrap items-center gap-1 p-2 bg-muted/50 rounded-lg">
         {[
           market.disputable && {
-            id: "verify",
+            id: "dispute",
             label: t("Dispute"),
             icon: MessagesSquare,
           },
-          { id: "overview", label: t("overview"), icon: Target },
+          { id: "overview", label: t("Overview"), icon: Target },
           {
             id: "comments",
-            label: t("comments"),
+            label: t("Comments"),
             icon: MessageCircle,
             count: comments.length,
           },
@@ -508,11 +508,11 @@ export default function MarketPage({
           })}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-2">
           {/* Verify Truth Tab*/}
-          {activeTab === "verify" && (
+          {activeTab === "dispute" && market.disputable && (
             <>
               <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
                 <CardHeader>
@@ -1086,7 +1086,7 @@ export default function MarketPage({
         </div>
 
         {/* Sidebar - Casting Interface */}
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1098,7 +1098,7 @@ export default function MarketPage({
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Quick Cast Buttons */}
+              Quick Cast Buttons
               <div className="space-y-3">
                 <Label className="text-sm font-medium">
                   {t("quickCastTruth")}
@@ -1155,7 +1155,7 @@ export default function MarketPage({
 
               <Separator />
 
-              {/* Custom Cast */}
+              Custom Cast
               <div className="space-y-3">
                 <Label className="text-sm font-medium">
                   {t("customAmount")}
@@ -1187,7 +1187,7 @@ export default function MarketPage({
                     />
                   </div>
 
-                  {/* Real-time Profit Calculator */}
+                  Real-time Profit Calculator
                   {profitCalculation && (
                     <div className="p-3 bg-muted/30 rounded-lg border border-border">
                       <h4 className="text-sm font-medium mb-2 text-primary">
@@ -1250,7 +1250,7 @@ export default function MarketPage({
                 </Button>
               </div>
 
-              {/* Potential Return */}
+              Potential Return
               {castAmount && !isNaN(parseFloat(castAmount)) && (
                 <div className="p-3 bg-muted/50 rounded-lg">
                   <div className="text-sm text-muted-foreground mb-1">
@@ -1268,8 +1268,8 @@ export default function MarketPage({
             </CardContent>
           </Card>
 
-          {/* Market Stats */}
-          {/* <Card>
+          Market Stats
+          <Card>
             <CardHeader>
               <CardTitle className="text-base">{t('marketStatistics')}</CardTitle>
             </CardHeader>
@@ -1291,8 +1291,8 @@ export default function MarketPage({
                 <span className="font-medium text-green-500">High</span>
               </div>
             </CardContent>
-          </Card> */}
-        </div>
+          </Card>
+        </div> */}
       </div>
     </div>
   );
