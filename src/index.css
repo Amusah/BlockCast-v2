@@ -7237,6 +7237,7 @@
   --font-size: 14px;
   --background: #151d28;
   --foreground: #f9f9ff;
+  --foreground-dark: #F6EDCB;
   --card: #1a2935;
   --card-foreground: #f9f9ff;
   --popover: #1a2935;
@@ -7277,6 +7278,7 @@
 .dark {
   --background: #151d28;
   --foreground: #f9f9ff;
+  --foreground-dark: #F6EDCB;
   --card: #1a2935;
   --card-foreground: #f9f9ff;
   --popover: #1a2935;
