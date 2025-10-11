@@ -461,7 +461,7 @@ export default function TopNavigation({
                     />
 
                     {/* Language Selector Mobile */}
-                    <div className="mt-3">
+                    {/* <div className="mt-3">
                       <Select
                         value={language}
                         onValueChange={(value) => setLanguage(value as any)}
@@ -479,7 +479,7 @@ export default function TopNavigation({
                           ))}
                         </SelectContent>
                       </Select>
-                    </div>
+                    </div> */}
 
                     {/* Sign Out */}
                     <Button
