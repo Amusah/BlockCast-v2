@@ -336,33 +336,36 @@ export default function TopNavigation({
                         Truth Verifier
                       </p>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleNavClick("/settings")}
-                      className="p-2 h-8 w-8 cursor-pointer"
-                      aria-label="Settings"
-                    >
-                      <Settings className="h-4 w-4" />
-                    </Button>
 
-                    {/* Theme Toggle - Compact */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={onToggleDarkMode}
-                      className="p-2 cursor-pointer"
-                    >
-                      {isDarkMode ? (
-                        <Sun className="h-4 w-4 text-primary" />
-                      ) : (
-                        <Moon className="h-4 w-4 text-primary" />
-                      )}
-                    </Button>
+                    <div className="mr-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleNavClick("/settings")}
+                        className="p-2 h-8 w-8 cursor-pointer"
+                        aria-label="Settings"
+                      >
+                        <Settings className="h-4 w-4" />
+                      </Button>
+
+                      {/* Theme Toggle - Compact */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onToggleDarkMode}
+                        className="p-2 cursor-pointer"
+                      >
+                        {isDarkMode ? (
+                          <Sun className="h-4 w-4 text-primary" />
+                        ) : (
+                          <Moon className="h-4 w-4 text-primary" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
 
                   {/* Balance */}
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg">
+                  <div className="flex items-center justify-between px-4 py-2 bg-gradient-to-r from-primary/10 to-secondary/10">
                     <div className="flex items-center gap-2">
                       <Wallet className="h-5 w-5 text-primary" />
                       <span className="font-medium">Balance</span>
@@ -374,7 +377,7 @@ export default function TopNavigation({
 
                   <div
                     onClick={() => handleNavClick("/settings", "profile")}
-                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
+                    className="flex items-center gap-2 px-2 ml-2 cursor-pointer"
                   >
                     {/* <HandCoins className="size-6 text-primary" /> */}
                     <User className="h-4 w-4 text-primary" />
@@ -385,7 +388,7 @@ export default function TopNavigation({
 
                   <div
                     onClick={() => handleNavClick("/settings", "portfolio")}
-                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
+                    className="flex items-center gap-2 px-2 ml-2 cursor-pointer"
                   >
                     {/* <HandCoins className="size-6 text-primary" /> */}
                     <BriefcaseBusiness className="size-4 text-primary" />
@@ -399,7 +402,7 @@ export default function TopNavigation({
                       setIsVisible(true);
                       handleNavClick();
                     }}
-                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
+                    className="flex items-center gap-2 px-2 ml-2 cursor-pointer"
                   >
                     {/* <HandCoins className="size-6 text-primary" /> */}
                     <HandCoins className="size-4 text-primary" />
@@ -410,7 +413,7 @@ export default function TopNavigation({
 
                   <div
                     onClick={() => handleNavClick("/settings", "history")}
-                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
+                    className="flex items-center gap-2 px-2 ml-2 cursor-pointer"
                   >
                     {/* <HandCoins className="size-6 text-primary" /> */}
                     <History className="size-4 text-primary" />

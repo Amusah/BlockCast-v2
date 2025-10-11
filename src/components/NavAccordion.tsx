@@ -24,7 +24,7 @@ const NavAccordion = ({ handleLinkClick, accordionTitle, data = accordionData })
         onClick={handleToggleSupport}
         className="flex items-center justify-between cursor-pointer border p-2 bg-gradient-to-r from-primary/10 to-secondary/10"
       >
-        <h4 className="font-semibold">{accordionTitle}</h4>
+        <h4 className="font-semibold text-xs md:text-sm">{accordionTitle}</h4>
         <ChevronDown
           className={`h-5 w-5 transform transition-transform duration-300  ${
             toggleSupport ? "arrow" : ""
@@ -42,7 +42,7 @@ const NavAccordion = ({ handleLinkClick, accordionTitle, data = accordionData })
             key={item.label}
             variant="ghost"
             onClick={() => handleLinkClick(item.page)}
-            className="w-full justify-start h-auto px-2 py-1 text-muted-foreground hover:text-foreground cursor-pointer mb-0"
+            className="w-full justify-start h-auto px-2 py-1 md:py-2 text-muted-foreground hover:text-foreground cursor-pointer mb-0"
           >
             {item.label}
           </Button>
