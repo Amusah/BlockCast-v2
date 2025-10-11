@@ -154,7 +154,7 @@ export default function TopNavigation({
           {/* Right: User Actions - Simplified */}
           <div className="flex items-center gap-3">
             {/* Language Selector - Compact */}
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
@@ -179,7 +179,7 @@ export default function TopNavigation({
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
 
             {/* Balance (Desktop) - Compact */}
             <div className="hidden lg:flex items-center gap-1 bg-muted/50 px-2 py-1 rounded-md">
