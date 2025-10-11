@@ -109,6 +109,23 @@ export default function Footer({ onNavigate }: FooterProps) {
                 <Mail className="h-4 w-4" />
               </Button>
             </div>
+            <div className="flex items-center text-sm text-muted-foreground h-2 ">
+              <p>
+                &copy; {new Date().getFullYear()} Blockcast. Fighting
+                misinformation through truth.
+              </p>
+            </div>
+            <div className="flex items-center text-sm text-muted-foreground gap-2 h-10 md:pb-4">
+              <p>Built on</p>
+              <span className="flex items-center">
+                <img
+                  className="h-6 text-muted-foreground"
+                  src={hederaPrimary}
+                  alt=""
+                />
+                <p>Hedera</p>
+              </span>
+            </div>
           </div>
 
           {/* Truth Platform Links */}
@@ -165,7 +182,7 @@ export default function Footer({ onNavigate }: FooterProps) {
         <Separator className="my-8" />
 
         {/* Bottom Footer */}
-        <div className="flex flex-col items-center h-40 p-8 md:p-0 md:h-20">
+        {/* <div className="flex flex-col items-center h-40 p-8 md:p-0 md:h-20">
           <div className="flex items-center text-sm text-muted-foreground h-2 ">
             <p>
               &copy; {new Date().getFullYear()} Blockcast. Fighting
@@ -184,8 +201,9 @@ export default function Footer({ onNavigate }: FooterProps) {
               <p>Hedera</p>
             </span>
           </div>
+        </div> */}
 
-          {/* <div className="flex items-center gap-4 w-full hidden lg:flex">
+        {/* <div className="flex items-center gap-4 w-full hidden lg:flex">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-sm text-muted-foreground">
@@ -199,7 +217,6 @@ export default function Footer({ onNavigate }: FooterProps) {
               </span>
             </div>
           </div> */}
-        </div>
       </div>
     </footer>
   );
