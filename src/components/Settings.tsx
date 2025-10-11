@@ -120,8 +120,7 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
         
         .accordion-container {
           display: grid;
-          grid-template-rows: repeat(2, auto);
-          grid-auto-flow: column;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
           gap: 20px;
           justify-content: start;
         }
@@ -342,7 +341,8 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Accordion with Custom Grid Styling */}
-              <div className="grid grid-cols-3 gap-5">
+              {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-5"> */}
+              <div>
                 <Accordion type="single" collapsible className="col-span-3">
                   <div className="accordion-container">
                     <AccordionItem

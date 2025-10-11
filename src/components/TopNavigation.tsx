@@ -206,13 +206,29 @@ export default function TopNavigation({
               variant="ghost"
               size="sm"
               onClick={onToggleDarkMode}
-              className="p-2 cursor-pointer"
+              className="p-2 cursor-pointer hidden lg:block"
             >
               {isDarkMode ? (
                 <Sun className="h-4 w-4" />
               ) : (
                 <Moon className="h-4 w-4" />
               )}
+            </Button>
+
+            {/* Authentication buttons */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="relative p-2 cursor-pointer text-primary"
+            >
+              Login
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="relative p-2 bg-primary text-primary-foreground"
+            >
+              Sign Up
             </Button>
 
             {/* User Menu (Desktop) - Simplified */}
@@ -285,11 +301,11 @@ export default function TopNavigation({
             {/* Mobile Menu Toggle */}
             <div className="lg:hidden">
               <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
-                <SheetTrigger asChild>
+                {/* <SheetTrigger asChild>
                   <Button variant="ghost" size="sm" className="p-2">
                     <Menu className="h-5 w-5" />
                   </Button>
-                </SheetTrigger>
+                </SheetTrigger> */}
                 <SheetContent side="right" className="w-80">
                   <SheetHeader className="pb-6">
                     <SheetTitle className="flex items-center gap-2">
@@ -329,6 +345,20 @@ export default function TopNavigation({
                     >
                       <Settings className="h-4 w-4" />
                     </Button>
+
+                    {/* Theme Toggle - Compact */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={onToggleDarkMode}
+                      className="p-2 cursor-pointer"
+                    >
+                      {isDarkMode ? (
+                        <Sun className="h-4 w-4 text-primary" />
+                      ) : (
+                        <Moon className="h-4 w-4 text-primary" />
+                      )}
+                    </Button>
                   </div>
 
                   {/* Balance */}
@@ -342,15 +372,21 @@ export default function TopNavigation({
                     </span>
                   </div>
 
-                  <div onClick={() => handleNavClick("/settings", "profile")} className="flex items-center gap-2 p-2 ml-2 cursor-pointer">
+                  <div
+                    onClick={() => handleNavClick("/settings", "profile")}
+                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
+                  >
                     {/* <HandCoins className="size-6 text-primary" /> */}
-                      <User className="h-4 w-4 text-primary" />
+                    <User className="h-4 w-4 text-primary" />
                     <span className="text-md text-muted-foreground">
                       Profile
                     </span>
                   </div>
 
-                  <div onClick={() => handleNavClick("/settings", "portfolio")} className="flex items-center gap-2 p-2 ml-2 cursor-pointer">
+                  <div
+                    onClick={() => handleNavClick("/settings", "portfolio")}
+                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
+                  >
                     {/* <HandCoins className="size-6 text-primary" /> */}
                     <BriefcaseBusiness className="size-4 text-primary" />
                     <span className="text-md text-muted-foreground">
@@ -372,11 +408,28 @@ export default function TopNavigation({
                     </span>
                   </div>
 
-                  <div onClick={() => handleNavClick("/settings", "history")} className="flex items-center gap-2 p-2 ml-2 cursor-pointer">
+                  <div
+                    onClick={() => handleNavClick("/settings", "history")}
+                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
+                  >
                     {/* <HandCoins className="size-6 text-primary" /> */}
                     <History className="size-4 text-primary" />
                     <span className="text-md text-muted-foreground">
                       History
+                    </span>
+                  </div>
+
+                  <div
+                    onClick={onToggleDarkMode}
+                    className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
+                  >
+                    {isDarkMode ? (
+                      <Sun className="size-4 text-primary" />
+                    ) : (
+                      <Moon className="size-4 text-primary" />
+                    )}
+                    <span className="text-md text-muted-foreground">
+                      {isDarkMode ? "Light theme" : "Dark theme"}
                     </span>
                   </div>
 
@@ -521,6 +574,30 @@ export default function TopNavigation({
               style={{ fontSize: "12px" }}
             >
               Search
+            </span>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex flex-col items-center justify-center gap-1 text-muted-foreground"
+            onClick={() => setShowMobileMenu(true)}
+            style={{
+              flex: "1",
+              minWidth: "70px",
+              minHeight: "60px",
+              padding: "12px 5px",
+              margin: "0 2px",
+            }}
+          >
+            <Menu className="h-5 w-5" />
+            <span
+              className="text-xs font-medium truncate"
+              style={{
+                fontSize: "12px",
+              }}
+            >
+              Menu
             </span>
           </Button>
         </div>

@@ -412,7 +412,7 @@ const getStatusIcon = (status: string) => {
 
 export default function Social() {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState("voting");
+  const [activeTab, setActiveTab] = useState("ai-learning");
   const [newPost, setNewPost] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -721,10 +721,10 @@ export default function Social() {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* <TabsList className="grid w-full grid-cols-4"> */}
         <TabsList className="flex w-full justify-between flex-wrap">
-          <TabsTrigger value="voting" className="gap-2 p-2">
+          {/* <TabsTrigger value="voting" className="gap-2 p-2">
             <Vote className="h-4 w-4" />
             Truth Voting
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger value="ai-learning" className="gap-2">
             <Brain className="h-4 w-4" />
             AI Learning
@@ -733,10 +733,10 @@ export default function Social() {
             <MessageCircle className="h-4 w-4" />
             Community Feed
           </TabsTrigger>
-          <TabsTrigger value="communities" className="gap-2">
+          {/* <TabsTrigger value="communities" className="gap-2">
             <Flag className="h-4 w-4" />
             African Communities
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger value="leaderboard" className="gap-2">
             <Award className="h-4 w-4" />
             Truth Leaders
@@ -744,8 +744,8 @@ export default function Social() {
         </TabsList>
 
         {/******************* Truth voting *************************/}
-        <TabsContent value="voting" className="space-y-6 mt-4">
-          {/* Filters */}
+        {/* <TabsContent value="voting" className="space-y-6 mt-4">
+          // Filters
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -785,7 +785,7 @@ export default function Social() {
             </Select>
           </div>
 
-          {/* Verification Claims */}
+          // Verification Claims
           <div className="space-y-4">
             {filteredVerifications.map((verification) => (
               <Card
@@ -835,10 +835,10 @@ export default function Social() {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  {/* Conflict Alert */}
+                  // Conflict Alert
                   {getConflictAlert(verification)}
 
-                  {/* Voting Progress */}
+                  // Voting Progress
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">
@@ -900,7 +900,7 @@ export default function Social() {
                     </div>
                   </div>
 
-                  {/* AI vs Community Comparison */}
+                  // AI vs Community Comparison
                   {verification.aiVerdict && (
                     <div className="grid grid-cols-2 gap-4 p-3 bg-muted/20 rounded-lg">
                       <div className="text-center">
@@ -944,7 +944,7 @@ export default function Social() {
                     </div>
                   )}
 
-                  {/* Tags */}
+                  // Tags
                   {verification.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {verification.tags.map((tag, index) => (
@@ -959,7 +959,7 @@ export default function Social() {
                     </div>
                   )}
 
-                  {/* Voting Interface */}
+                  // Voting Interface
                   {verification.status === "voting" &&
                     !userVotes[verification.id] && (
                       <div className="flex gap-3 p-4 bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/20 rounded-lg">
@@ -980,7 +980,7 @@ export default function Social() {
                       </div>
                     )}
 
-                  {/* User Vote Confirmation */}
+                  // User Vote Confirmation
                   {userVotes[verification.id] && (
                     <div className="p-3 bg-primary/10 border border-primary/20 rounded-lg">
                       <div className="flex items-center gap-2">
@@ -995,7 +995,7 @@ export default function Social() {
                     </div>
                   )}
 
-                  {/* Actions */}
+                  // Actions
                   <div className="flex gap-3 flex-wrap">
                     <Button
                       variant="outline"
@@ -1023,7 +1023,7 @@ export default function Social() {
               </Card>
             ))}
           </div>
-        </TabsContent>
+        </TabsContent> */}
         {/*****************************Truth Voting ends *******************************/}
 
         {/******************* AI Learning starts *************************/}
@@ -1366,7 +1366,7 @@ export default function Social() {
 
         {/******************* African Communities *************************/}
 
-        <TabsContent value="communities" className="space-y-6 mt-8">
+        {/* <TabsContent value="communities" className="space-y-6 mt-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {africanCommunities.map((community) => (
               <Card
@@ -1452,7 +1452,7 @@ export default function Social() {
               </Card>
             ))}
           </div>
-        </TabsContent>
+        </TabsContent> */}
         {/*****************************African Communities ends *******************************/}
 
         {/******************* Leaderboard *************************/}
