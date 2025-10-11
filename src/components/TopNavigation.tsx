@@ -419,7 +419,7 @@ export default function TopNavigation({
                     </span>
                   </div>
 
-                  <div
+                  {/* <div
                     onClick={onToggleDarkMode}
                     className="flex items-center gap-2 p-2 ml-2 cursor-pointer"
                   >
@@ -431,7 +431,7 @@ export default function TopNavigation({
                     <span className="text-md text-muted-foreground">
                       {isDarkMode ? "Light theme" : "Dark theme"}
                     </span>
-                  </div>
+                  </div> */}
 
                   {/* Support & Legal Links */}
                   {/* <FooterAccordion handleLinkClick={(page) => {
