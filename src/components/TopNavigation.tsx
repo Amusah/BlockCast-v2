@@ -337,12 +337,12 @@ export default function TopNavigation({
                       </p>
                     </div>
 
-                    <div className="mr-2">
+                    
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleNavClick("/settings")}
-                        className="p-2 h-8 w-8 cursor-pointer"
+                        className="p-2 h-8 w-8 cursor-pointer mr-2"
                         aria-label="Settings"
                       >
                         <Settings className="h-4 w-4" />
@@ -361,7 +361,7 @@ export default function TopNavigation({
                           <Moon className="h-4 w-4 text-primary" />
                         )}
                       </Button>
-                    </div>
+                    
                   </div>
 
                   {/* Balance */}
