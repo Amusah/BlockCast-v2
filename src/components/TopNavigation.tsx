@@ -106,7 +106,7 @@ export default function TopNavigation({
     <>
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
-        <div className="flex h-16 items-center justify-between px-4  mx-auto lg:px-8"> {/* .container .max-w-7xl --removed*/}
+        <div className="flex h-16 items-center justify-between px-4 container mx-auto lg:px-8"> {/* .container .max-w-7xl --removed*/}
           {/* Left: Logo and Brand */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">

@@ -129,7 +129,7 @@ const RouterLayout = ({ userProfile, isDarkMode, handleToggleDarkMode }: {
         userBalance={userProfile?.balance || 0}
       />
       
-      <main className="flex-1 mx-auto px-4 py-6 lg:px-8 pb-20 lg:pb-6"> {/* Container and max-w-7xl removed */}
+      <main className="flex-1 container mx-auto px-4 py-6 lg:px-8 pb-20 lg:pb-6"> {/*  max-w-7xl removed */}
         <Outlet />
       </main>
       
