@@ -4,13 +4,15 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle, } from "../components/ui/card";
+  CardTitle,
+} from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Progress } from "../components/ui/progress";
 import { Textarea } from "../components/ui/textarea";
 import { Separator } from "../components/ui/separator";
+import { ImageUpload } from "../components/ui/image-upload";
 import {
   Tabs,
   TabsContent,
@@ -44,6 +46,8 @@ import {
   ThumbsDown,
   Target,
   Clock,
+  Sparkles,
+  Image,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "../components/ui/avatar";
@@ -56,6 +60,7 @@ import {
 } from "../components/ui/select";
 import { useLanguage } from "../components/LanguageContext";
 import { toast } from "sonner@2.0.3";
+import { OpinionModal } from "@/components/ui/modal";
 
 interface SocialPost {
   id: string;
@@ -412,7 +417,7 @@ const getStatusIcon = (status: string) => {
 
 export default function Social() {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState("ai-learning");
+  const [activeTab, setActiveTab] = useState("feed");
   const [newPost, setNewPost] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -425,6 +430,7 @@ export default function Social() {
   const [userVotes, setUserVotes] = useState<Record<string, "true" | "false">>(
     {}
   );
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const getReputationBadge = (reputation: string) => {
     const badges = {
@@ -637,6 +643,10 @@ export default function Social() {
     return "Just now";
   };
 
+  const handleToggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
   return (
     <div className="space-y-6 max-w-screen mx-auto">
       {/* Header */}
@@ -717,6 +727,8 @@ export default function Social() {
         </div>
       </div>
 
+      {isModalVisible && <OpinionModal />}
+
       {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* <TabsList className="grid w-full grid-cols-4"> */}
@@ -725,13 +737,13 @@ export default function Social() {
             <Vote className="h-4 w-4" />
             Truth Voting
           </TabsTrigger> */}
-          <TabsTrigger value="ai-learning" className="gap-2">
-            <Brain className="h-4 w-4" />
-            AI Learning
-          </TabsTrigger>
           <TabsTrigger value="feed" className="gap-2">
             <MessageCircle className="h-4 w-4" />
             Community Feed
+          </TabsTrigger>
+          <TabsTrigger value="ai-learning" className="gap-2">
+            <Brain className="h-4 w-4" />
+            AI Learning
           </TabsTrigger>
           {/* <TabsTrigger value="communities" className="gap-2">
             <Flag className="h-4 w-4" />
@@ -1026,144 +1038,26 @@ export default function Social() {
         </TabsContent> */}
         {/*****************************Truth Voting ends *******************************/}
 
-        {/******************* AI Learning starts *************************/}
-        <TabsContent value="ai-learning" className="space-y-6 mt-8">
-          <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Brain className="h-6 w-6 text-secondary" />
-                AI Learning Dashboard
-              </CardTitle>
-              <CardDescription>
-                How community feedback helps our AI become more accurate
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-foreground">
-                    Learning Progress
-                  </h4>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-sm">Overall Accuracy</span>
-                      <span className="font-medium">94.2% (+6.8%)</span>
-                    </div>
-                    <Progress value={94.2} className="h-2" />
-
-                    <div className="flex justify-between">
-                      <span className="text-sm">
-                        African Context Understanding
-                      </span>
-                      <span className="font-medium">91.5% (+12.4%)</span>
-                    </div>
-                    <Progress value={91.5} className="h-2" />
-
-                    <div className="flex justify-between">
-                      <span className="text-sm">
-                        Source Reliability Assessment
-                      </span>
-                      <span className="font-medium">96.8% (+8.1%)</span>
-                    </div>
-                    <Progress value={96.8} className="h-2" />
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-foreground">
-                    Community Impact
-                  </h4>
-                  <div className="space-y-3">
-                    <div className="p-3 bg-primary/10 rounded-lg">
-                      <div className="text-lg font-bold text-primary">
-                        1,247
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        AI corrections from community votes
-                      </div>
-                    </div>
-
-                    <div className="p-3 bg-secondary/10 rounded-lg">
-                      <div className="text-lg font-bold text-secondary">89</div>
-                      <div className="text-sm text-muted-foreground">
-                        Conflicts resolved this month
-                      </div>
-                    </div>
-
-                    <div className="p-3 bg-green-500/10 rounded-lg">
-                      <div className="text-lg font-bold text-green-500">
-                        98.3%
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Community-AI agreement rate
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-4">
-                <h4 className="font-semibold text-foreground">
-                  Recent Learning Examples
-                </h4>
-                <div className="space-y-3">
-                  <div className="p-3 bg-muted/20 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <Brain className="h-4 w-4 text-secondary mt-1" />
-                      <div>
-                        <p className="text-sm font-medium">
-                          Improved Nigerian Economic Context
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Community corrections helped AI better understand
-                          inflation impact on rural communities
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-muted/20 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <Users className="h-4 w-4 text-primary mt-1" />
-                      <div>
-                        <p className="text-sm font-medium">
-                          Enhanced Source Credibility Scoring
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Community feedback improved AI's assessment of local
-                          African news sources
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-muted/20 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <Target className="h-4 w-4 text-green-500 mt-1" />
-                      <div>
-                        <p className="text-sm font-medium">
-                          Regional Nuance Recognition
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Learning to distinguish between similar claims across
-                          different African countries
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         {/******************* Community Feed *************************/}
 
         <TabsContent value="feed" className="space-y-6 mt-8">
           {/* Create Post */}
-          <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
+          <Card className="border-border/50 bg-card/80 backdrop-blur-sm p-4">
+            <div className="flex items-center gap-8">
+              <Button onClick={handleToggleModal} className="cursor-pointer">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Your Opinion
+              </Button>
+              <span className="text-xs">
+                <p>What truth have you discovered today?</p>
+                <p>
+                  Share your truth verification insights, predictions or start a
+                  discussion...
+                </p>
+              </span>
+            </div>
+          </Card>
+          {/* <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Plus className="h-5 w-5" />
@@ -1203,7 +1097,7 @@ export default function Social() {
                 </Button>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Feed Filters */}
           <div className="flex flex-col lg:flex-row gap-4">
@@ -1363,6 +1257,139 @@ export default function Social() {
           </div>
         </TabsContent>
         {/*****************************Community Feed ends *******************************/}
+
+        {/******************* AI Learning starts *************************/}
+        <TabsContent value="ai-learning" className="space-y-6 mt-8">
+          <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brain className="h-6 w-6 text-secondary" />
+                AI Learning Dashboard
+              </CardTitle>
+              <CardDescription>
+                How community feedback helps our AI become more accurate
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-foreground">
+                    Learning Progress
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm">Overall Accuracy</span>
+                      <span className="font-medium">94.2% (+6.8%)</span>
+                    </div>
+                    <Progress value={94.2} className="h-2" />
+
+                    <div className="flex justify-between">
+                      <span className="text-sm">
+                        African Context Understanding
+                      </span>
+                      <span className="font-medium">91.5% (+12.4%)</span>
+                    </div>
+                    <Progress value={91.5} className="h-2" />
+
+                    <div className="flex justify-between">
+                      <span className="text-sm">
+                        Source Reliability Assessment
+                      </span>
+                      <span className="font-medium">96.8% (+8.1%)</span>
+                    </div>
+                    <Progress value={96.8} className="h-2" />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-foreground">
+                    Community Impact
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <div className="text-lg font-bold text-primary">
+                        1,247
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        AI corrections from community votes
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-secondary/10 rounded-lg">
+                      <div className="text-lg font-bold text-secondary">89</div>
+                      <div className="text-sm text-muted-foreground">
+                        Conflicts resolved this month
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-green-500/10 rounded-lg">
+                      <div className="text-lg font-bold text-green-500">
+                        98.3%
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Community-AI agreement rate
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <h4 className="font-semibold text-foreground">
+                  Recent Learning Examples
+                </h4>
+                <div className="space-y-3">
+                  <div className="p-3 bg-muted/20 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <Brain className="h-4 w-4 text-secondary mt-1" />
+                      <div>
+                        <p className="text-sm font-medium">
+                          Improved Nigerian Economic Context
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Community corrections helped AI better understand
+                          inflation impact on rural communities
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-muted/20 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <Users className="h-4 w-4 text-primary mt-1" />
+                      <div>
+                        <p className="text-sm font-medium">
+                          Enhanced Source Credibility Scoring
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Community feedback improved AI's assessment of local
+                          African news sources
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-muted/20 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <Target className="h-4 w-4 text-green-500 mt-1" />
+                      <div>
+                        <p className="text-sm font-medium">
+                          Regional Nuance Recognition
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Learning to distinguish between similar claims across
+                          different African countries
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         {/******************* African Communities *************************/}
 
