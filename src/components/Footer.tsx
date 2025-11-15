@@ -11,6 +11,7 @@ import {
   Target,
   ChevronDown,
 } from "lucide-react";
+import { BsTwitterX } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 // import FooterAccordion from './FooterAccordion';
@@ -60,7 +61,7 @@ export default function Footer({ onNavigate }: FooterProps) {
     <footer className="bg-card border-t border-border mt-12">
       <div className="container mx-auto px-4 py-12 lg:px-8">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {/* Brand Section - Tagline Removed */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
@@ -91,7 +92,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 size="sm"
                 className="p-2"
               >
-                <Twitter className="h-4 w-4" />
+                <BsTwitterX className="h-4 w-4" />
               </Button>
               <Button
                 {...({} as any)}
@@ -151,6 +152,30 @@ export default function Footer({ onNavigate }: FooterProps) {
               ))}
             </div>
           </div>
+          {/************* Resource Links *************/}
+          <div className="space-y-4 md:block hidden">
+            <h4 className="font-semibold text-foreground">Resources</h4>
+            <div className="space-y-2">
+              {[
+                { label: "How it Works", icon: "icon", page: "markets" },
+                { label: "Help Center", icon: "Users", page: "help" },
+                { label: "Contact Us", icon: 'icon', page: "contact" },
+                // { label: "Fact Verification", icon: Shield, page: "verify" },
+                // { label: "Help Center", icon: Users, page: "community" },
+              ].map((item) => (
+                <Button
+                  {...({} as any)}
+                  key={item.label}
+                  variant="ghost"
+                  onClick={() => handleLinkClick(item.page)}
+                  className="w-full justify-start gap-2 h-auto p-2 text-muted-foreground hover:text-foreground"
+                >
+                  {/* <item.icon className="h-4 w-4" /> */}
+                  {item.label}
+                </Button>
+              ))}
+            </div>
+          </div>
 
           {/*************************** Truth Support *************************/}
 
@@ -158,11 +183,11 @@ export default function Footer({ onNavigate }: FooterProps) {
             <h4 className="font-semibold text-foreground">Support & Legal</h4>
             <div className="space-y-2">
               {[
-                { label: "About Blockcast", page: "about" },
-                { label: "Contact Us", page: "contact" },
+                { label: "About us", page: "about" },
+                // { label: "Contact Us", page: "contact" },
                 { label: "Privacy Policy", page: "privacy" },
-                { label: "Terms of Service", page: "terms" },
-                { label: "Help Center", page: "help" },
+                { label: "Terms & conditions", page: "terms" },
+                // { label: "Help Center", page: "help" },
               ].map((item) => (
                 <Button
                   {...({} as any)}
