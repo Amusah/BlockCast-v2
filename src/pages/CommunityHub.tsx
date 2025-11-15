@@ -61,6 +61,7 @@ import {
 import { useLanguage } from "../components/LanguageContext";
 import { toast } from "sonner@2.0.3";
 import { OpinionModal } from "@/components/ui/modal";
+import { Dialog, DialogContent } from "../components/ui/dialog";
 
 interface SocialPost {
   id: string;
@@ -674,7 +675,7 @@ export default function Social() {
       </div>
 
       {/* Community Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-lg border border-primary/20">
           <div className="flex items-center gap-2 mb-2">
             <Users className="h-5 w-5 text-primary" />
@@ -725,9 +726,14 @@ export default function Social() {
           <p className="text-2xl font-bold text-foreground">92.4%</p>
           <p className="text-sm text-muted-foreground">Community accuracy</p>
         </div>
-      </div>
+      </div> */}
 
-      {isModalVisible && <OpinionModal />}
+      <Dialog open={isModalVisible} onOpenChange={handleToggleModal}>
+        <DialogContent >
+          <OpinionModal />
+        </DialogContent>
+      </Dialog>
+      {/* {isModalVisible && <OpinionModal />} */}
 
       {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

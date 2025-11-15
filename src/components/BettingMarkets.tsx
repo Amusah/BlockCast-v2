@@ -961,19 +961,17 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
           {sortedMarkets.map((market) => (
             <Card
               key={market.id}
-              className={`relative overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group border-border hover:border-primary/50 ${
-                market.trending ? "trending-corner" : ""
-              }`}
+              className={`relative overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group border-border hover:border-primary/50 `}
               onClick={() => navigate(`/market/${market.id}`)}
             >
-              {market.trending && (
+              {/* ${market.trending ? "trending-corner" : ""} */}
+              {/* {market.trending && (
                 <div className="absolute top-0 left-0 z-10">
                   <div className="bg-gradient-to-r from-primary to-secondary text-primary-foreground px-2 py-1 text-xs font-bold transform -rotate-45 translate-x-[-8px] translate-y-[10px] shadow-lg">
                     TRENDING
                   </div>
                 </div>
-              )}
-
+              )} */}
               {market.imageUrl && (
                 <div className="aspect-video relative overflow-hidden">
                   <img
@@ -984,7 +982,7 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
                   {/* Confidence Badge */}
-                  <Badge
+                  {/* <Badge
                     className={`absolute top-2 right-2 text-xs px-2 py-1 ${
                       market.confidenceLevel === "high"
                         ? "bg-green-500/90 text-white"
@@ -994,7 +992,7 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
                     }`}
                   >
                     {market.confidenceLevel.toUpperCase()}
-                  </Badge>
+                  </Badge> */}
 
                   {/* Country/Region Badge */}
                   {(market.country || market.region) && (
@@ -1007,7 +1005,6 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
                   )}
                 </div>
               )}
-
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <Badge variant="outline" className="text-xs shrink-0">
@@ -1040,7 +1037,6 @@ export default function BettingMarkets({ onPlaceBet, userBalance, markets = real
                   )}
                 </CardDescription>
               </CardHeader>
-
               <CardContent className="space-y-4">
                 {/* Pool Information */}
                 <div className="space-y-2">

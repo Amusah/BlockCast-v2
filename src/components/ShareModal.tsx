@@ -3,7 +3,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
-import { Copy, Check, Share2, MessageCircle, Twitter, Facebook, QrCode, Zap } from 'lucide-react';
+import { Copy, Check, Share2, MessageCircle, Send, Facebook, QrCode, Zap } from 'lucide-react';
+import { BsTwitterX } from "react-icons/bs";
 import { toast } from 'sonner';
 
 interface ShareModalProps {
@@ -103,7 +104,7 @@ export default function ShareModal({ isOpen, onClose, market }: ShareModalProps)
             Invite friends to bet on this market and earn rewards together
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-6">
           {/* Market Preview */}
           <div className="p-4 bg-muted/30 rounded-lg">
@@ -116,11 +117,15 @@ export default function ShareModal({ isOpen, onClose, market }: ShareModalProps)
             <div className="grid grid-cols-2 gap-3">
               <div className="text-center p-2 bg-primary/10 rounded">
                 <div className="text-sm font-semibold text-primary">YES</div>
-                <div className="text-xs text-muted-foreground">{market.yesOdds}x</div>
+                <div className="text-xs text-muted-foreground">
+                  {market.yesOdds}x
+                </div>
               </div>
               <div className="text-center p-2 bg-secondary/10 rounded">
                 <div className="text-sm font-semibold text-secondary">NO</div>
-                <div className="text-xs text-muted-foreground">{market.noOdds}x</div>
+                <div className="text-xs text-muted-foreground">
+                  {market.noOdds}x
+                </div>
               </div>
             </div>
           </div>
@@ -129,7 +134,9 @@ export default function ShareModal({ isOpen, onClose, market }: ShareModalProps)
           <div className="p-3 bg-gradient-to-r from-green-400/10 to-primary/10 rounded-lg border border-green-400/30">
             <div className="flex items-center gap-2 mb-1">
               <Zap className="h-4 w-4 text-green-400" />
-              <span className="text-sm font-semibold text-green-400">Referral Bonus</span>
+              <span className="text-sm font-semibold text-green-400">
+                Referral Bonus
+              </span>
             </div>
             <p className="text-xs text-muted-foreground">
               Earn 0.1 ETH when your friend places their first bet!
@@ -140,74 +147,80 @@ export default function ShareModal({ isOpen, onClose, market }: ShareModalProps)
           <div>
             <label className="text-sm font-medium mb-2 block">Share Link</label>
             <div className="flex gap-2">
-              <Input 
-                value={shareUrl} 
-                readOnly 
-                className="bg-muted text-muted-foreground text-xs" 
+              <Input
+                value={shareUrl}
+                readOnly
+                className="bg-muted text-muted-foreground text-xs"
               />
-              <Button 
-                onClick={handleCopyLink} 
-                variant="outline" 
+              <Button
+                onClick={handleCopyLink}
+                variant="outline"
                 size="sm"
                 className="shrink-0"
               >
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {copied ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </div>
 
           {/* Social Platforms */}
           <div>
-            <label className="text-sm font-medium mb-3 block">Share on Social Media</label>
+            <label className="text-sm font-medium mb-3 block">
+              Share on Social Media
+            </label>
             <div className="grid grid-cols-2 gap-3">
               <Button
                 variant="outline"
-                onClick={() => handleShare('twitter')}
+                onClick={() => handleShare("twitter")}
                 className="gap-2 relative"
-                disabled={selectedPlatform === 'twitter'}
+                disabled={selectedPlatform === "twitter"}
               >
-                <Twitter className="h-4 w-4" />
-                Twitter
-                {selectedPlatform === 'twitter' && (
+                <BsTwitterX className="h-4 w-4" />
+
+                {selectedPlatform === "twitter" && (
                   <div className="absolute inset-0 bg-primary/20 rounded animate-pulse" />
                 )}
               </Button>
-              
+
               <Button
                 variant="outline"
-                onClick={() => handleShare('facebook')}
+                onClick={() => handleShare("facebook")}
                 className="gap-2 relative"
-                disabled={selectedPlatform === 'facebook'}
+                disabled={selectedPlatform === "facebook"}
               >
                 <Facebook className="h-4 w-4" />
                 Facebook
-                {selectedPlatform === 'facebook' && (
+                {selectedPlatform === "facebook" && (
                   <div className="absolute inset-0 bg-primary/20 rounded animate-pulse" />
                 )}
               </Button>
-              
+
               <Button
                 variant="outline"
-                onClick={() => handleShare('whatsapp')}
+                onClick={() => handleShare("whatsapp")}
                 className="gap-2 relative"
-                disabled={selectedPlatform === 'whatsapp'}
+                disabled={selectedPlatform === "whatsapp"}
               >
                 <MessageCircle className="h-4 w-4" />
                 WhatsApp
-                {selectedPlatform === 'whatsapp' && (
+                {selectedPlatform === "whatsapp" && (
                   <div className="absolute inset-0 bg-primary/20 rounded animate-pulse" />
                 )}
               </Button>
-              
+
               <Button
                 variant="outline"
-                onClick={() => handleShare('telegram')}
+                onClick={() => handleShare("telegram")}
                 className="gap-2 relative"
-                disabled={selectedPlatform === 'telegram'}
+                disabled={selectedPlatform === "telegram"}
               >
-                <QrCode className="h-4 w-4" />
+                <Send className="h-4 w-4" />
                 Telegram
-                {selectedPlatform === 'telegram' && (
+                {selectedPlatform === "telegram" && (
                   <div className="absolute inset-0 bg-primary/20 rounded animate-pulse" />
                 )}
               </Button>

@@ -333,7 +333,7 @@ export default function MarketPage({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
 
-            {market.trending && (
+            {/* {market.trending && (
               <div className="absolute top-4 left-4">
                 <Badge
                   variant="secondary"
@@ -343,7 +343,7 @@ export default function MarketPage({
                   {t("trending")}
                 </Badge>
               </div>
-            )}
+            )} */}
 
             <div className="absolute bottom-4 left-4 right-4">
               <Badge
