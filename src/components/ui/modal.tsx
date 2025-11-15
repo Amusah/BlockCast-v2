@@ -15,7 +15,7 @@ import {
 
 import { Sparkles } from "lucide-react";
 
-export const OpinionModal = () => {
+export const OpinionModal = ({ handleCreateOpinion }) => {
   return (
     <Card>
       {/* Opinion Modal */}
@@ -52,7 +52,7 @@ export const OpinionModal = () => {
           <Textarea
             id="claim"
             placeholder="Provide context and details about this market..."
-            value=""
+            // value=""
             // onChange=""
             rows={4}
             className="resize-none"
@@ -144,7 +144,7 @@ export const OpinionModal = () => {
             </h2>
             <Input
               placeholder=""
-              value={""}
+              // value={""}
               // onChange={(e) => setSearchQuery(e.target.value)}
               className="border-primary/30"
             />
@@ -155,7 +155,7 @@ export const OpinionModal = () => {
         </div>
       </CardContent>
       <CardContent className="mt-12">
-        <Button className="cursor-pointer w-full" onClick="">
+        <Button className="cursor-pointer w-full" onClick={handleCreateOpinion}>
           <Sparkles className="size-5" />
           Share Your Opinion
         </Button>

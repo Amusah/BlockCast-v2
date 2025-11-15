@@ -648,6 +648,12 @@ export default function Social() {
     setIsModalVisible(!isModalVisible);
   };
 
+  const handleCreateOpinion = (e) => {
+    e.preventDefault();
+    handleToggleModal()
+    toast.success('Opinion created');
+  }
+
   return (
     <div className="space-y-6 max-w-screen mx-auto">
       {/* Header */}
@@ -730,7 +736,7 @@ export default function Social() {
 
       <Dialog open={isModalVisible} onOpenChange={handleToggleModal}>
         <DialogContent >
-          <OpinionModal />
+          <OpinionModal handleCreateOpinion={handleCreateOpinion} />
         </DialogContent>
       </Dialog>
       {/* {isModalVisible && <OpinionModal />} */}
