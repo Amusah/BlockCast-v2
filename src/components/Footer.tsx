@@ -12,12 +12,14 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { BsTwitterX } from "react-icons/bs";
+import { FaDiscord, FaTiktok, FaTelegramPlane } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 // import FooterAccordion from './FooterAccordion';
 import blockcastLogo from "@/assets/4714a7efb088ecf7991d3a7cb494d86ff45fc844.png";
 import { useNavigate } from "react-router-dom";
-import hederaPrimary from "@/assets/hedera-primary.svg";
+// import hederaPrimary from "@/assets/hedera-primary.svg";
+import bnbLogo from "@/assets/bnb-bnb-logo.svg";
 
 interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -100,7 +102,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 size="sm"
                 className="p-2"
               >
-                <MessageCircle className="h-4 w-4" />
+                <FaDiscord className="h-4 w-4" />
               </Button>
               <Button
                 {...({} as any)}
@@ -108,7 +110,16 @@ export default function Footer({ onNavigate }: FooterProps) {
                 size="sm"
                 className="p-2"
               >
-                <Mail className="h-4 w-4" />
+                <FaTiktok className="h-4 w-4" />
+              </Button>
+
+              <Button
+                {...({} as any)}
+                variant="ghost"
+                size="sm"
+                className="p-2"
+              >
+                <FaTelegramPlane className="h-4 w-4" />
               </Button>
             </div>
             <div className="flex items-center text-sm text-muted-foreground h-2 ">
@@ -118,14 +129,14 @@ export default function Footer({ onNavigate }: FooterProps) {
               </p>
             </div>
             <div className="flex items-center text-sm text-muted-foreground gap-2 h-10 md:pb-4">
-              <p>Built on</p>
-              <span className="flex items-center">
+              <p>Built on </p>
+              <span className="flex items-center gap-2">
                 <img
                   className="h-6 text-muted-foreground"
-                  src={hederaPrimary}
+                  src={bnbLogo}
                   alt=""
                 />
-                <p>Hedera</p>
+                <p>BNB CHAIN</p>
               </span>
             </div>
           </div>
@@ -159,7 +170,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               {[
                 { label: "How it Works", icon: "icon", page: "markets" },
                 { label: "Help Center", icon: "Users", page: "help" },
-                { label: "Contact Us", icon: 'icon', page: "contact" },
+                { label: "Contact Us", icon: "icon", page: "contact" },
                 // { label: "Fact Verification", icon: Shield, page: "verify" },
                 // { label: "Help Center", icon: Users, page: "community" },
               ].map((item) => (

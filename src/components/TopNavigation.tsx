@@ -106,7 +106,9 @@ export default function TopNavigation({
     <>
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
-        <div className="flex h-16 items-center justify-between px-4 container mx-auto lg:px-8"> {/* .container .max-w-7xl --removed*/}
+        <div className="flex h-16 items-center justify-between px-4 container mx-auto lg:px-8">
+          {" "}
+          {/* .container .max-w-7xl --removed*/}
           {/* Left: Logo and Brand */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
@@ -150,7 +152,6 @@ export default function TopNavigation({
               })}
             </nav>
           </div>
-
           {/* Right: User Actions - Simplified */}
           <div className="flex items-center gap-3">
             {/* Language Selector - Compact */}
@@ -271,19 +272,20 @@ export default function TopNavigation({
                   <DropdownMenuItem
                     onClick={() => handleNavClick("/settings", "portfolio")}
                   >
-                    <BriefcaseBusiness className="h-4 w-4 mr-2" />
-                    Portfolio
+                    <History className="h-4 w-4 mr-2" />
+                    Activity
                   </DropdownMenuItem>
                   {/* <DropdownMenuSeparator /> */}
-                  <DropdownMenuItem
+                  {/* <DropdownMenuItem
                     onClick={() => handleNavClick("/settings", "history")}
                   >
                     <History className="h-4 w-4 mr-2" />
                     History
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   {/* <DropdownMenuSeparator /> */}
                   <DropdownMenuItem onSelect={() => setIsVisible(true)}>
-                    <HandCoins className="h-4 w-4 mr-2" />
+                    {/* <HandCoins className="h-4 w-4 mr-2" /> */}
+                    <Wallet className="h-4 w-4 mr-2" />
                     Fund Wallet
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -308,7 +310,7 @@ export default function TopNavigation({
                 </SheetTrigger> */}
                 <SheetContent side="right" className="w-80">
                   <SheetHeader className="pb-6">
-                    <SheetTitle className="flex items-center gap-2">
+                    {/* <SheetTitle className="flex items-center gap-2">
                       <button
                         onClick={handleLogoClick}
                         className="flex items-center gap-2 hover:opacity-80 transition-opacity focus:outline-none"
@@ -320,7 +322,7 @@ export default function TopNavigation({
                         />
                         Blockcast
                       </button>
-                    </SheetTitle>
+                    </SheetTitle> */}
                   </SheetHeader>
 
                   {/* User Profile Section */}
@@ -337,31 +339,29 @@ export default function TopNavigation({
                       </p>
                     </div>
 
-                    
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleNavClick("/settings")}
-                        className="p-2 h-8 w-8 cursor-pointer mr-2"
-                        aria-label="Settings"
-                      >
-                        <Settings className="h-4 w-4" />
-                      </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleNavClick("/settings")}
+                      className="p-2 h-8 w-8 cursor-pointer mr-2"
+                      aria-label="Settings"
+                    >
+                      <Settings className="h-4 w-4" />
+                    </Button>
 
-                      {/* Theme Toggle - Compact */}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={onToggleDarkMode}
-                        className="p-2 cursor-pointer"
-                      >
-                        {isDarkMode ? (
-                          <Sun className="h-4 w-4 text-primary" />
-                        ) : (
-                          <Moon className="h-4 w-4 text-primary" />
-                        )}
-                      </Button>
-                    
+                    {/* Theme Toggle - Compact */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={onToggleDarkMode}
+                      className="p-2 cursor-pointer"
+                    >
+                      {isDarkMode ? (
+                        <Sun className="h-4 w-4 text-primary" />
+                      ) : (
+                        <Moon className="h-4 w-4 text-primary" />
+                      )}
+                    </Button>
                   </div>
 
                   {/* Balance */}

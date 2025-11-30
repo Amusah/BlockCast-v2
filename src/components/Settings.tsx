@@ -87,7 +87,7 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
   }, [active])
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-6 mx-auto"> {/*max-w-4xl*/}
       {/* Custom styles for accordion items */}
       <style>{`
         .accordion-item-custom {
@@ -148,13 +148,13 @@ export default function Settings({ isDarkMode, onToggleDarkMode, userBalance = 0
             Profile
           </TabsTrigger>
           <TabsTrigger value="portfolio" className="gap-2">
-            <BriefcaseBusiness className="h-4 w-4 mr-2" />
+            <History className="h-4 w-4 mr-2" />
             Portfolio
           </TabsTrigger>
-          <TabsTrigger value="history" className="gap-2">
+          {/* <TabsTrigger value="history" className="gap-2">
             <History className="h-4 w-4" />
             History
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger value="preferences" className="gap-2">
             <Palette className="h-4 w-4" />
             Preferences

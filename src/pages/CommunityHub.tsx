@@ -1150,7 +1150,7 @@ export default function Social() {
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     {/* Post Header */}
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex justify-between gap-4 flex-wrap">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">
                           <AvatarFallback className="bg-primary text-primary-foreground">
@@ -1218,7 +1218,7 @@ export default function Social() {
                     <Separator />
 
                     {/* Post Actions */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between flex-wrap">
                       <div className="flex items-center gap-4">
                         <Button
                           variant="ghost"
@@ -1257,7 +1257,7 @@ export default function Social() {
                         </Button>
                       </div>
 
-                      <Button variant="outline" size="sm">
+                      <Button className="cursor-pointer hover:text-#fff mt-2" variant="outline" size="sm">
                         <Eye className="h-4 w-4 mr-2" />
                         View Full Thread
                       </Button>
@@ -1512,7 +1512,7 @@ export default function Social() {
                   className="border-border/50 bg-card/80 backdrop-blur-sm"
                 >
                   <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-wrap">
                       <div className="flex items-center gap-3">
                         <div className="text-2xl font-bold text-primary">
                           #{index + 1}
