@@ -735,7 +735,7 @@ export default function Social() {
       </div> */}
 
       <Dialog open={isModalVisible} onOpenChange={handleToggleModal}>
-        <DialogContent >
+        <DialogContent>
           <OpinionModal handleCreateOpinion={handleCreateOpinion} />
         </DialogContent>
       </Dialog>
@@ -1257,7 +1257,11 @@ export default function Social() {
                         </Button>
                       </div>
 
-                      <Button className="cursor-pointer hover:text-#fff mt-2" variant="outline" size="sm">
+                      <Button
+                        className="cursor-pointer hover:text-#fff mt-2"
+                        variant="outline"
+                        size="sm"
+                      >
                         <Eye className="h-4 w-4 mr-2" />
                         View Full Thread
                       </Button>
@@ -1534,8 +1538,8 @@ export default function Social() {
                           </div>
                         </div>
                       </div>
-
-                      <div className="flex-1 grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                      {/* grid grid-cols-2 md:grid-cols-3 gap-4 */}
+                      <div className="flex-1 flex flex-col md:flex-row justify-center gap-8 text-center">
                         <div>
                           <div className="text-xl font-bold text-primary">
                             {author.verifiedClaims}
@@ -1561,7 +1565,6 @@ export default function Social() {
                           </div>
                         </div>
                       </div>
-
                       <Button variant="outline" size="sm">
                         <Star className="h-4 w-4 mr-2" />
                         Follow
